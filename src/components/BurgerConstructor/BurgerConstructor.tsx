@@ -3,7 +3,7 @@ import styles from './BurgerConstructor.module.css';
 const img = '';
 const  BurgerConstructor = () => {
     return (  
-        <section className="burgerConstructor">
+        <section className={styles.burgerConstructor}>
             {/* отдельно верх булки*/}
             <ConstructorElement
                 type="top"

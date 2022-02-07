@@ -1,0 +1,19 @@
+.burgerIngredients {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    max-width: 600px;
+}
+
+.burgerIngredientsHeader {
+    width: 100%;
+}
+
+.burgerIngredientsTubs {
+    display: flex;
+    flex-direction: row;
+}
+
+.burgerIngredientsSet {
+    
+}
