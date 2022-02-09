@@ -6,13 +6,7 @@
     align-items: center;
     max-width: 1920px;
     width: 100%;
-    margin: 0 auto 0 auto;
-}
-
-.headerContainer {  
-    display: flex;
-    flex-direction: row;
-    
+    margin: 0 auto;
 }
 
 .nav {
@@ -22,13 +16,13 @@
     justify-content: center;
 }
 
-.navNavigation {
+.nav__navigation {
     list-style-type: none;
     display: flex;
     flex-direction: row;
 }
 
-.navButton {
+.nav__button {
     display: flex;
     flex-direction: row;
     align-items: center;

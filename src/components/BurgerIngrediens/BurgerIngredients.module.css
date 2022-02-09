@@ -3,17 +3,68 @@
     flex-direction: column;
     width: 50%;
     max-width: 600px;
+    height: calc(100vh - 80px - 88px - 40px);
 }
 
-.burgerIngredientsHeader {
+.burgerIngredients__header {
     width: 100%;
 }
 
-.burgerIngredientsTubs {
+.burgerIngredients__tabs {
     display: flex;
     flex-direction: row;
 }
 
-.burgerIngredientsSet {
+.burgerIngredients__element {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.burgerIngredients__priceBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.burgerIngredients__caption {
+    height: 48px;
+    text-align: center;
+}
+
+.burgerIngredients__container {
     
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.burgerIngredients__container::-webkit-scrollbar {
+    background: #2F2F37;
+    width: 8px;
+    
+}
+
+.burgerIngredients__container::-webkit-scrollbar-thumb {
+    background: #8585AD;
+    border: 3px solid #8585AD;
+}
+
+.burgerIngredients__ingridients {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.burgerIngredients__element {
+    width: 100%;
+    cursor: pointer;
+    max-width: 272px;
+}
+
+.burgerIngredients__price {
+    padding-right: 9px;
 }

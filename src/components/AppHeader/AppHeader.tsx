@@ -5,12 +5,12 @@ const  AppHeader = () => {
     return (  
         <header className={styles.header + " pt-4 pb-4"}>
             <nav className={styles.nav}>
-                <ul className={styles.navNavigation}>
-                    <li className={styles.navButton + " pl-5 pr-5"}>
+                <ul className={styles.nav__navigation}>
+                    <li className={styles.nav__button + " pl-5 pr-5"} key = {1}>
                         <BurgerIcon type="primary" />
                         <p className="text text_type_main-large ml-2">Конструктор</p>
                     </li>
-                    <li className={styles.navButton + " pl-5 pr-5 ml-2"}>
+                    <li className={styles.nav__button + " pl-5 pr-5 ml-2"} key = {2}>
                         <ListIcon type="primary" />
                         <p className="text text_type_main-large ml-2 text_color_inactive">Лента заказов</p>                        
                     </li>
@@ -18,7 +18,7 @@ const  AppHeader = () => {
             </nav>        
             <Logo />
             <nav className={styles.nav}>    
-                <div className={styles.navButton + " pl-5 pr-5 ml-2"}>
+                <div className={styles.nav__button + " pl-5 pr-5 ml-2"}>
                     <ProfileIcon type="primary" />
                     <p className="text text_type_main-large ml-2 text_color_inactive">Личный кабинет</p>
                 </div>
