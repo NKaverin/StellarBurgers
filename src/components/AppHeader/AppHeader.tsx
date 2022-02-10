@@ -4,6 +4,7 @@ import styles from './AppHeader.module.css';
 const  AppHeader = () => {
     return (  
         <header className={styles.header + " pt-4 pb-4"}>
+            {/* левая часть*/}
             <nav className={styles.nav}>
                 <ul className={styles.nav__navigation}>
                     <li className={styles.nav__button + " pl-5 pr-5"} key = {1}>
@@ -17,6 +18,7 @@ const  AppHeader = () => {
                 </ul>   
             </nav>        
             <Logo />
+            {/* правая часть*/}
             <nav className={styles.nav}>    
                 <div className={styles.nav__button + " pl-5 pr-5 ml-2"}>
                     <ProfileIcon type="primary" />

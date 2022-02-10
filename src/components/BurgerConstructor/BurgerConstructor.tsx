@@ -1,8 +1,8 @@
-import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import data from '../../utils/data';
+import {  ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerConstructor.module.css';
-
+import PropTypes from 'prop-types';
 const img = 'https://code.s3.yandex.net/react/code/bun-02.png';
+
 const  BurgerConstructor = (props) => {
     return (  
         <section className={styles.burgerConstructor + " ml-5 pt-25"}>
@@ -45,12 +45,18 @@ const  BurgerConstructor = (props) => {
             <div className={styles.burgerConstructor__total + " mt-10 mr-10"}>
                 <p className="text text_type_digits-medium mr-2">200</p>
                 <CurrencyIcon type="primary" />
-                <div className={styles.burgerConstructor__button + " pl-5 pr-5 ml-10"}>
+                <div className={styles.burgerConstructor__button + " pl-5 pr-5 ml-10"} onClick={props.openHandler}>
                     <p className="text text_type_main-medium ml-2">Оформить заказ</p>
                 </div>
             </div>
         </section>      
     );
 };
+
+
+BurgerConstructor.propTypes = {
+    openHandler: PropTypes.func,
+    data: PropTypes.array
+}
 
 export default BurgerConstructor;
