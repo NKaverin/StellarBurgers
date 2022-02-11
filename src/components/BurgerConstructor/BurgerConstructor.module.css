@@ -40,13 +40,4 @@
     align-items: center;
 }
 
-.burgerConstructor__button {
-    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
-    border-radius: 64px;
-    width: 215px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
 

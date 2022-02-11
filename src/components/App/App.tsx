@@ -6,22 +6,18 @@ import { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderDetails from '../OrderDetails/OrderDetails';
-const api = 'https://norma.nomoreparties.space/api/ingredients';
+const api = 'https://norma.nomoreparties.space/api/';
 
 function App() {
     const [data, setData] = useState(null); 
     const [item, setItem] = useState(null);
-    const [isVisibleIngredient, setIsVisibleIngredient] = useState(false);
     const [isVisibleOrder, setIsVisibleOrder] = useState(false);
     
     {/* открытие и закрытие  деталей ингредиента */}
     const openItem = (item) => {
-        setIsVisibleIngredient(true);
         setItem(item);
     }  
     const closeItem = () => {
-        setIsVisibleIngredient(false);
-        
         setItem(null);
     }
 
@@ -32,9 +28,14 @@ function App() {
 
     {/* получаем данные */}
     useEffect(()=> {
-        fetch(api)
+        fetch(api + 'ingredients')
             .then(res => {
-                return res.json()
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    throw 'Не удалось распознать ответ от сервера';
+                }
+                
             })
             .then(data => {
                 setData(data);
@@ -47,16 +48,16 @@ function App() {
             <div className={styles.app + " pt-10"}>
                 <AppHeader />
                 <main className={styles.page + " pb-10 pt-10"}>
-                    {data && <BurgerIngredients {...data} openHandler={openItem}/>}
-                    {data && <BurgerConstructor {...data} openHandler={doOrder}/>}   
+                    {data && (<BurgerIngredients {...data} openHandler={openItem}/>)}
+                    {data && (<BurgerConstructor {...data} openHandler={doOrder}/>)}   
                 </main>
             </div>
-            {isVisibleIngredient && <Modal closeHandler={closeItem} title="Детали ингредиента">        
-                {<IngredientDetails item={item} />} 
-            </Modal>}
-            {isVisibleOrder && <Modal closeHandler={doOrder}>        
+            {item && (<Modal closeHandler={closeItem} title="Детали ингредиента">       
+                <IngredientDetails item={item} />
+            </Modal>)}
+            {isVisibleOrder && (<Modal closeHandler={doOrder}>        
                 {<OrderDetails />} 
-            </Modal>}
+            </Modal>)}
         </>
     );
 }

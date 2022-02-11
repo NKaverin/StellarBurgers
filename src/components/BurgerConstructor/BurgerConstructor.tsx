@@ -1,53 +1,60 @@
-import {  ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import {  ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerConstructor.module.css';
 import PropTypes from 'prop-types';
-const img = 'https://code.s3.yandex.net/react/code/bun-02.png';
+import propTypesOfDataElement from '../../utils/propTypesOfDataElement';
 
 const  BurgerConstructor = (props) => {
+    {/* берем первую булку из данных*/}
+    const bun =  props.data.filter((element) => element.type === 'bun')[0];
+
     return (  
         <section className={styles.burgerConstructor + " ml-5 pt-25"}>
             {/* отдельно верх булки*/}
             <div className={styles.burgerConstructor__bun + " pl-8"}>
                 <ConstructorElement 
-                    type="top"
                     isLocked={true}
-                    text="Краторная булка N-200i (верх)"
-                    price={200}
-                    thumbnail={img}
+                    text={bun.name + " (верх)"}
+                    price={bun.price}
+                    thumbnail={bun.image}
                 />
             </div>
             {/* содержимое*/}
             <ul className={styles.burgerConstructor__ingredients + " "}>   
                 {props.data.map( element => {
-                return (
-                    <li className={styles.burgerConstructor__element + " mt-4" } key={element._id}>
-                        <DragIcon type="primary" />
-                        <ConstructorElement
-                            text= {element.name}
-                            price={element.price}
-                            thumbnail={element.image}
-                            
-                        />
-                    </li>
-                )})}
+                    if (element.type !== 'bun') {
+                        return (
+                            <li className={styles.burgerConstructor__element + " mt-4" } key={element._id}>
+                                <DragIcon type="primary" />
+                                <ConstructorElement
+                                    text= {element.name}
+                                    price={element.price}
+                                    thumbnail={element.image}
+                                    
+                                />
+                            </li>
+                        )
+                    }
+                })}
             </ul>
             {/* отдельно низ булки*/}
             <div className={styles.burgerConstructor__bun + " pl-8 mt-4"}>
-                <ConstructorElement
-                    type="bottom"
+                <ConstructorElement 
                     isLocked={true}
-                    text="Краторная булка N-200i (низ)"
-                    price={200}
-                    thumbnail={img}
+                    text={bun.name + " (низ)"}
+                    price={bun.price}
+                    thumbnail={bun.image}
                 />
             </div>
             {/* подвал*/}
             <div className={styles.burgerConstructor__total + " mt-10 mr-10"}>
                 <p className="text text_type_digits-medium mr-2">200</p>
                 <CurrencyIcon type="primary" />
-                <div className={styles.burgerConstructor__button + " pl-5 pr-5 ml-10"} onClick={props.openHandler}>
-                    <p className="text text_type_main-medium ml-2">Оформить заказ</p>
+                <div className="ml-10" onClick={props.openHandler}>
+                    <Button type="primary" size="medium">
+                        Оформить заказ
+                    </Button>   
                 </div>
+        
             </div>
         </section>      
     );
@@ -55,8 +62,9 @@ const  BurgerConstructor = (props) => {
 
 
 BurgerConstructor.propTypes = {
-    openHandler: PropTypes.func,
-    data: PropTypes.array
+    openHandler: PropTypes.func.isRequired,
+    data: PropTypes.array.isRequired,
+    element: propTypesOfDataElement
 }
 
 export default BurgerConstructor;

@@ -18,7 +18,7 @@ const Modal = ({children, closeHandler, title}) => {
         return () => {
             window.removeEventListener('keydown', closeModal);
         }
-    },[])
+    },[closeHandler])
 
     const container = document.getElementById('modal-root');
     if (!container) {
@@ -27,7 +27,7 @@ const Modal = ({children, closeHandler, title}) => {
 
     return ReactDOM.createPortal(    
         (<div className={styles.modal}>
-        <ModalOverlay />
+            <ModalOverlay closeHandler = {closeHandler} />
             <div className={styles.modal__container + " pl-10 pr-10" + (title === null ? " pt-10" : " pt-15")}>
                 <div className={styles.modal__titleContainer}>
                     <p className="text text_type_main-large">{title}</p>
@@ -44,7 +44,7 @@ const Modal = ({children, closeHandler, title}) => {
 Modal.propTypes = {  
     children: PropTypes.element.isRequired,
     title: PropTypes.string,
-    closeHandler: PropTypes.func
+    closeHandler: PropTypes.func.isRequired
 }
 
 export default Modal;

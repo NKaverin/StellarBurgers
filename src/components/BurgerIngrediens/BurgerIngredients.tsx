@@ -2,6 +2,7 @@ import { Tab, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-compo
 import React from 'react';
 import styles from './BurgerIngredients.module.css';
 import PropTypes from 'prop-types';
+import propTypesOfDataElement from '../../utils/propTypesOfDataElement';
 
 const  BurgerIngredients = ({ data, openHandler }) => {
     return (  
@@ -11,11 +12,11 @@ const  BurgerIngredients = ({ data, openHandler }) => {
             <Tabs/>
             {/* ингредиенты */}
             <div className={styles.burgerIngredients__container + " mt-10"}>    
-                <h2 className={styles.burgerIngredients__header + " text text_type_main-large"}> Булки </h2>
+                <h2 className={styles.burgerIngredients__header + " text text_type_main-medium"}> Булки </h2>
                 <Ingredients type="bun" data = {data} openHandler = {openHandler} />
-                <h2 className={styles.burgerIngredients__header + " text text_type_main-large"}> Соусы </h2>
+                <h2 className={styles.burgerIngredients__header + " text text_type_main-medium"}> Соусы </h2>
                 <Ingredients type="sauce" data = {data} openHandler = {openHandler} />
-                <h2 className={styles.burgerIngredients__header + " text text_type_main-large"}> Начинки </h2>
+                <h2 className={styles.burgerIngredients__header + " text text_type_main-medium"}> Начинки </h2>
                 <Ingredients type="main" data = {data} openHandler = {openHandler} /> 
             </div>
         </section>
@@ -43,10 +44,8 @@ const Tabs = () => {
 const Ingredients = ({ data, type, openHandler }) => {
     return (
         <ul className={styles.burgerIngredients__ingridients + " pl-1 pr-1 pt-6 pb-2"}>
-            {data.map(element => {
-                if (element.type === type) {
-                    return <Element {...element} key = {element._id} openHandler = {openHandler}/>
-                }
+            {data.filter(element => element.type === type).map(element => {
+                return <Element {...element} key = {element._id} openHandler = {openHandler}/>
             })}
         </ul>
     )
@@ -59,7 +58,7 @@ const Element = (props) => {
             {/*<Counter count={0} size="default" />*/}
             <img src={props.image} alt={props.name} className="burgerIngredients__picture" />
             <div className={styles.burgerIngredients__priceBox + " mt-1 mb-1"}>
-                <p className={styles.burgerIngredients__price}>{props.price}</p>
+                <p className={styles.burgerIngredients__price + " text text_type_digits-small"}>{props.price}</p>
                 <CurrencyIcon type="primary" />
             </div>
             <p className={styles.burgerIngredients__caption +  " text text_type_main-default"}>{props.name}</p>
@@ -68,8 +67,32 @@ const Element = (props) => {
 }
 
 BurgerIngredients.propTypes = {
-    data: PropTypes.array,
-    openHandler: PropTypes.func
+    openHandler: PropTypes.func.isRequired,
+    data: PropTypes.array.isRequired,
+    element: propTypesOfDataElement
+}
+
+Element.propTypes = {
+    openHandler: PropTypes.func.isRequired,
+    // данные элемента
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    proteins: PropTypes.number.isRequired,
+    fat: PropTypes.number.isRequired,
+    carbohydrates: PropTypes.number.isRequired,
+    calories: PropTypes.number.isRequired,
+    price: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+    image_mobile: PropTypes.string.isRequired,
+    image_large: PropTypes.string.isRequired,
+    __v: PropTypes.number.isRequired
+}
+
+Ingredients.propTypes = {
+    openHandler: PropTypes.func.isRequired,
+    data: PropTypes.array.isRequired,
+    element: propTypesOfDataElement
 }
 
 export default BurgerIngredients;

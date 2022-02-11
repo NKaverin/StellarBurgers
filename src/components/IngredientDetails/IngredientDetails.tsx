@@ -1,5 +1,5 @@
 import styles from './IngredientDetails.module.css';
-import PropTypes from 'prop-types';
+import propTypesOfDataElement from '../../utils/propTypesOfDataElement';
 
 const IngredientDetails = ({ item }) => {
     return (
@@ -29,7 +29,7 @@ const IngredientDetails = ({ item }) => {
 }
 
 IngredientDetails.propTypes = {  
-    item: PropTypes.element
+    item: propTypesOfDataElement
 }
 
 export default IngredientDetails;
