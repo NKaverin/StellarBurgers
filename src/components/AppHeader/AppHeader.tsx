@@ -9,11 +9,11 @@ const  AppHeader = () => {
                 <ul className={styles.nav__navigation}>
                     <li className={styles.nav__button + " pl-5 pr-5"} key = {1}>
                         <BurgerIcon type="primary" />
-                        <p className="text text_type_main-medium ml-2">Конструктор</p>
+                        <p className="text text_type_main-default ml-2">Конструктор</p>
                     </li>
                     <li className={styles.nav__button + " pl-5 pr-5 ml-2"} key = {2}>
                         <ListIcon type="secondary" />
-                        <p className="text text_type_main-medium ml-2 text_color_inactive">Лента заказов</p>                        
+                        <p className="text text_type_main-default ml-2 text_color_inactive">Лента заказов</p>                        
                     </li>
                 </ul>   
             </nav>        
@@ -22,7 +22,7 @@ const  AppHeader = () => {
             <nav className={styles.nav}>    
                 <div className={styles.nav__button + " pl-5 pr-5 ml-2"}>
                     <ProfileIcon type="secondary" />
-                    <p className="text text_type_main-medium ml-2 text_color_inactive">Личный кабинет</p>
+                    <p className="text text_type_main-default ml-2 text_color_inactive">Личный кабинет</p>
                 </div>
             </nav>
         </header>

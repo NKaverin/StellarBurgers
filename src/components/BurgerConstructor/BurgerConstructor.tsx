@@ -63,8 +63,7 @@ const  BurgerConstructor = (props) => {
 
 BurgerConstructor.propTypes = {
     openHandler: PropTypes.func.isRequired,
-    data: PropTypes.array.isRequired,
-    element: propTypesOfDataElement
+    data: PropTypes.arrayOf(propTypesOfDataElement).isRequired
 }
 
 export default BurgerConstructor;

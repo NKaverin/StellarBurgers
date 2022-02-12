@@ -29,7 +29,7 @@ const IngredientDetails = ({ item }) => {
 }
 
 IngredientDetails.propTypes = {  
-    item: propTypesOfDataElement
+    item: propTypesOfDataElement.isRequired
 }
 
 export default IngredientDetails;

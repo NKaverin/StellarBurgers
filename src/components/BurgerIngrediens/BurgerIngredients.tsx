@@ -58,7 +58,7 @@ const Element = (props) => {
             {/*<Counter count={0} size="default" />*/}
             <img src={props.image} alt={props.name} className="burgerIngredients__picture" />
             <div className={styles.burgerIngredients__priceBox + " mt-1 mb-1"}>
-                <p className={styles.burgerIngredients__price + " text text_type_digits-small"}>{props.price}</p>
+                <p className={styles.burgerIngredients__price + " text text_type_digits-default"}>{props.price}</p>
                 <CurrencyIcon type="primary" />
             </div>
             <p className={styles.burgerIngredients__caption +  " text text_type_main-default"}>{props.name}</p>
@@ -91,8 +91,8 @@ Element.propTypes = {
 
 Ingredients.propTypes = {
     openHandler: PropTypes.func.isRequired,
-    data: PropTypes.array.isRequired,
-    element: propTypesOfDataElement
+    data: PropTypes.arrayOf(propTypesOfDataElement).isRequired,
+    type: PropTypes.string.isRequired
 }
 
 export default BurgerIngredients;
