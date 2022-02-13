@@ -1,0 +1,29 @@
+.header {  
+    background: #1C1C21;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1920px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    justify-content: center;
+}
+
+.nav__navigation {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+}
+
+.nav__button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

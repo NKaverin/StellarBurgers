@@ -1,0 +1,43 @@
+.burgerConstructor {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    max-width: 600px;
+    height: calc(100vh - 80px - 88px - 156px);
+}
+
+.burgerConstructor__total {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+}
+
+.burgerConstructor__ingredients {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.burgerConstructor__ingredients::-webkit-scrollbar {
+    background: #2F2F37;
+    width: 8px;
+}
+
+.burgerConstructor__ingredients::-webkit-scrollbar-thumb {
+    background: #8585AD;
+    border: 3px solid #8585AD;
+}
+
+.burgerConstructor__element {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 568px;
+    align-items: center;
+}
+
+
