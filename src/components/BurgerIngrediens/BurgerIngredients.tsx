@@ -1,45 +1,80 @@
 import { Tab, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styles from './BurgerIngredients.module.css';
 import PropTypes from 'prop-types';
 import propTypesOfDataElement from '../../utils/propTypesOfDataElement';
+import { useSelector } from "react-redux";
+import { RootState } from '../../services/redusers/rootReduser';
+import { useDrag } from 'react-dnd';
 
-const  BurgerIngredients = ({ data, openHandler }) => {
+const  BurgerIngredients = ({ openHandler }) => {
+    const data = useSelector((state:RootState) => state.ingredients.items);
+    const [current, setCurrent] = React.useState("buns");
+    function tabOnScreen() {
+        let options = {
+            root: document.querySelector('.burgerIngredients__container'),
+            rootMargin: '0px 0px -60% 0px',
+            threshold: 0.1
+        }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting ) {
+                    switch (entry.target.id) {
+                        case 'fillings': {
+                            setCurrent('fillings');
+                            break;
+                        }
+                        case 'suses': {
+                            setCurrent('suses');
+                            break;
+                        }
+                        case 'buns': {
+                            setCurrent('buns');
+                            break;
+                        }
+                    }
+                }
+            })
+        }, options)
+
+        observer.observe(document.querySelector('#fillings') as HTMLElement);
+        observer.observe(document.querySelector('#suses') as HTMLElement);
+        observer.observe(document.querySelector('#buns') as HTMLElement);
+        
+    }
+
+    useEffect(() => {
+        setTimeout(tabOnScreen, 200)
+    },[])
+
     return (  
         <section className={styles.burgerIngredients + " mr-5"}>
             <h1 className="text text_type_main-large mt-10"> Соберите бургер </h1>
             {/* переключатель */}
-            <Tabs/>
+            <div className={styles.burgerIngredients__tabs + " mt-5"}>
+                <a><Tab  value="buns" active={current === "buns"} onClick={setCurrent}>
+                    Булки
+                </Tab></a>
+                <a><Tab value="suses" active={current === "suses"} onClick={setCurrent}>
+                    Соусы
+                </Tab></a>
+                <a><Tab value="fillings" active={current === "fillings"} onClick={setCurrent}>
+                    Начинки
+            </Tab></a>
+            </div>
             {/* ингредиенты */}
             <div className={styles.burgerIngredients__container + " mt-10"}>    
-                <h2 className={styles.burgerIngredients__header + " text text_type_main-medium"}> Булки </h2>
-                <Ingredients type="bun" data = {data} openHandler = {openHandler} />
-                <h2 className={styles.burgerIngredients__header + " text text_type_main-medium"}> Соусы </h2>
+                <h2 className={styles.burgerIngredients__header + " text text_type_main-medium" } id = 'buns'> Булки </h2>
+                <Ingredients type="bun" data = {data} openHandler = {openHandler}  />
+                <h2 className={styles.burgerIngredients__header + " text text_type_main-medium"} id = 'suses'> Соусы </h2>
                 <Ingredients type="sauce" data = {data} openHandler = {openHandler} />
-                <h2 className={styles.burgerIngredients__header + " text text_type_main-medium"}> Начинки </h2>
+                <h2 className={styles.burgerIngredients__header + " text text_type_main-medium"} id = 'fillings'> Начинки </h2>
                 <Ingredients type="main" data = {data} openHandler = {openHandler} /> 
             </div>
         </section>
     );
 };
 
-
-const Tabs = () => {
-    const [current, setCurrent] = React.useState("buns")
-    return (
-        <div className={styles.burgerIngredients__tabs + " mt-5"}>
-            <a><Tab value="buns" active={current === "buns"} onClick={setCurrent}>
-                Булки
-            </Tab></a>
-            <a><Tab value="suses" active={current === "suses"} onClick={setCurrent}>
-                Соусы
-            </Tab></a>
-            <a><Tab value="fillings" active={current === "fillings"} onClick={setCurrent}>
-                Начинки
-            </Tab></a>
-        </div>
-    )
-}
 
 const Ingredients = ({ data, type, openHandler }) => {
     return (
@@ -52,9 +87,13 @@ const Ingredients = ({ data, type, openHandler }) => {
 }
 
 const Element = (props) => {
-    {/*const [count, setCount] = React.useState(0);*/}
+    const [, dragRef] = useDrag({
+        type: 'ingredient',  
+        item: props,
+    });
+
     return (
-        <div className={styles.burgerIngredients__element + " mb-8 pl-3 pr-3"} key = {props._id} onClick={() => props.openHandler(props)}>
+        <div className={styles.burgerIngredients__element + " mb-8 pl-3 pr-3"} key = {props._id} onClick={() => props.openHandler(props)} ref={dragRef}>
             {/*<Counter count={0} size="default" />*/}
             <img src={props.image} alt={props.name} className="burgerIngredients__picture" />
             <div className={styles.burgerIngredients__priceBox + " mt-1 mb-1"}>
@@ -68,7 +107,6 @@ const Element = (props) => {
 
 BurgerIngredients.propTypes = {
     openHandler: PropTypes.func.isRequired,
-    data: PropTypes.array.isRequired,
     element: propTypesOfDataElement
 }
 
@@ -91,7 +129,6 @@ Element.propTypes = {
 
 Ingredients.propTypes = {
     openHandler: PropTypes.func.isRequired,
-    data: PropTypes.arrayOf(propTypesOfDataElement).isRequired,
     type: PropTypes.string.isRequired
 }
 
