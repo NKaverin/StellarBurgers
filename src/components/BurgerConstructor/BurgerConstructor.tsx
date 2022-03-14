@@ -5,13 +5,13 @@ import { RootState } from '../../services/redusers/rootReduser';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useRef, useState } from 'react';
 import { useDrag, useDrop, XYCoord } from "react-dnd";
-import { ADD_TO_ORDER, REMOVE_FROM_ORDER, REORDER_ITEMS } from '../../services/actions/orderReducer';
+import { addToOrder, removeFromOrder, reorderItems } from '../../services/actions/orderReducer';
 import propTypesOfDataElement from '../../utils/propTypesOfDataElement';
-
+import { v4 as uuidv4 } from 'uuid'
 
 const  BurgerConstructor = (props) => {
     function onClickDeleteElement(element) {
-        dispatch({type:REMOVE_FROM_ORDER, element: element})
+        dispatch(removeFromOrder(element))
         setElementIndex(elementIndex - 1); 
     }
 
@@ -19,64 +19,72 @@ const  BurgerConstructor = (props) => {
     const [elementIndex, setElementIndex] = useState(1);
     const dispatch = useDispatch();
     const order = useSelector((state:RootState) => state.order);
-
     const data = order.ingredients;
-    // не может быть двух разных булок
-    const stockBun =  data.filter((element) => element.type === 'bun')[0];
     const [, dropTarget] = useDrop({
         accept: "ingredient",    
         drop(element:Element) {
             if (element.type === 'bun') {
                 element = {...element, elementIndex: 0}
-                dispatch({type:ADD_TO_ORDER, element: element}); 
+                dispatch(addToOrder(element)); 
             } else {
                 element = {...element, elementIndex: elementIndex}
-                dispatch({type:ADD_TO_ORDER, element: element});     
+                dispatch(addToOrder(element));     
                 setElementIndex(elementIndex + 1); 
             }
         }        
     });    
-
+    
     const moveListItem = useCallback(
         (dragIndex, hoverIndex) => {  
-            dispatch({type:REORDER_ITEMS, dragIndex, hoverIndex});
+            dispatch(reorderItems(dragIndex, hoverIndex));
         },
         [data],
     )
+    if (data.length === 0) {
+        return (  
+            <section className={styles.burgerConstructor + " ml-5 pt-25"} ref = { dropTarget }>
+                <p className="text text_type_main-medium"> Пожалуйста, перенесите сюда булку и ингредиенты для создания заказа. </p>
+            </section>
+        );
+    }
+    // не может быть двух разных булок
+    const stockBun =  data.filter((element) => element.type === 'bun')[0];
 
     return (  
         <section className={styles.burgerConstructor + " ml-5 pt-25"} ref = { dropTarget }>
             {/* отдельно верх булки*/}
-            <div className={styles.burgerConstructor__bun + " pl-8" }>
+            {stockBun && <div className={styles.burgerConstructor__bun + " pl-8" }>
                 <ConstructorElement 
                     isLocked={true}
                     text={stockBun.name + " (верх)"}
                     price={stockBun.price}
                     thumbnail={stockBun.image}
+                    type="top"
                 />
-            </div>
+            </div>}
             {/* содержимое*/}
             <ul className={styles.burgerConstructor__ingredients + " "}>   
                 {data.map( element => {
                     if (element.type !== 'bun') { 
-                        return <IngredientInOrder onClickDeleteElement = {(element) => onClickDeleteElement(element)} element={element} moveListItem={moveListItem} />
+                        return <IngredientInOrder onClickDeleteElement = {(element) => onClickDeleteElement(element)} element={element} moveListItem={moveListItem} key={uuidv4()}/>
                     }                    
                 })}
             </ul>
             {/* отдельно низ булки*/}
-            <div className={styles.burgerConstructor__bun + " pl-8 mt-4"}>
+            {stockBun && <div className={styles.burgerConstructor__bun + " pl-8 mt-4"}>
                 <ConstructorElement 
                     isLocked={true}
                     text={stockBun.name + " (низ)"}
                     price={stockBun.price}
                     thumbnail={stockBun.image}
+                    type="bottom"
                 />
-            </div>
+            </div>}
             {/* подвал*/}
             <div className={styles.burgerConstructor__total + " mt-10 mr-10"}>
                 <p className="text text_type_digits-medium mr-2">{order.totalPrice}</p>
                 <CurrencyIcon type="primary" />
-                <div className="ml-10" onClick={props.openHandler}>
+                <div className="ml-10" onClick={stockBun && props.openHandler}>
                     <Button type="primary" size="medium">
                         Оформить заказ
                     </Button>   
@@ -119,7 +127,8 @@ const IngredientInOrder = (props) => {
     dragRef(dropRef(ref))
     
     return (
-        <li className={styles.burgerConstructor__element + " mt-4" } key={element.elementIndex} ref={ref} id ={element.elementIndex}>
+        <li className={styles.burgerConstructor__element + " mt-4" } ref={ref} id ={element.elementIndex}>
+            
             <DragIcon type="primary" />
             <ConstructorElement
                 text= {element.name}

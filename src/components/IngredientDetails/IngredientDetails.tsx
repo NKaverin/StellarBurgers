@@ -13,15 +13,15 @@ const IngredientDetails = ({ item }) => {
                 </li>
                 <li className={styles.ingredientDetails__infoItem + " ml-5"}>
                     <p className="text text_type_main-small text_color_inactive">Белки, г</p>
-                    <p className="text text_type_digits-default text_color_inactive mt-2">{item.calories}</p>
+                    <p className="text text_type_digits-default text_color_inactive mt-2">{item.proteins}</p>
                 </li>
                 <li className={styles.ingredientDetails__infoItem + " ml-5"}>
                     <p className="text text_type_main-small text_color_inactive">Жиры, г</p>
-                    <p className="text text_type_digits-default text_color_inactive mt-2">{item.calories}</p>
+                    <p className="text text_type_digits-default text_color_inactive mt-2">{item.fat}</p>
                 </li>
                 <li className={styles.ingredientDetails__infoItem + " ml-5"}>
                     <p className="text text_type_main-small text_color_inactive">Углеводы, г</p>
-                    <p className="text text_type_digits-default text_color_inactive mt-2">{item.calories}</p>
+                    <p className="text text_type_digits-default text_color_inactive mt-2">{item.carbohydrates}</p>
                 </li>
             </ul>
         </div>

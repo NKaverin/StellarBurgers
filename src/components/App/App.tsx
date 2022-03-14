@@ -2,7 +2,7 @@ import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngrediens/BurgerIngredients';
-import { useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderDetails from '../OrderDetails/OrderDetails';
@@ -11,7 +11,7 @@ import { getIngredients } from '../../services/actions/ingredients';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { RootState } from '../../services/redusers/rootReduser';
-import { CLOSE_INGREDIENT_DETAILS, SHOW_INGREDIENT_DETAILS } from '../../services/actions/ingredientDetails';
+import { closeIngredientDetails, showIngredientDetails } from '../../services/actions/ingredientDetails';
 import { postOrder } from '../../services/actions/orderReducer';
 
 function App() {
@@ -23,10 +23,10 @@ function App() {
 
     {/* открытие и закрытие  деталей ингредиента */}
     const openItem = (item) => {
-        dispatch({type: SHOW_INGREDIENT_DETAILS, ingredient: item});
+        dispatch(showIngredientDetails(item));
     }  
     const closeItem = () => {
-        dispatch({type: CLOSE_INGREDIENT_DETAILS, ingredient: item});
+        dispatch(closeIngredientDetails(item));
     }
 
     {/* смена состояния для деталей заказа */}
@@ -34,15 +34,15 @@ function App() {
         setIsVisibleOrder(!isVisibleOrder);
     }
 
-    const openOrder = () => {
+    function openOrder () {
         const dataForOrder: string[] = [];
         data.forEach(element =>{
             dataForOrder.push(element._id);
         })
-        console.log(dataForOrder)
-        postOrder(dispatch, dataForOrder);
+        dispatch(postOrder(dataForOrder));
         setIsVisibleOrder(!isVisibleOrder);
     }
+
     {/* получаем данные */}
     useEffect(() => {
         dispatch(getIngredients);
