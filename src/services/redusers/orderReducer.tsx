@@ -13,7 +13,8 @@ interface Element {
     image_mobile: string,
     image_large: string,
     __v: number,
-    elementIndex: number
+    elementIndex: number,
+    uud: string
 }
 
 const pust:Array<Element> = [];

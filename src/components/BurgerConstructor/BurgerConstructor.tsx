@@ -27,7 +27,7 @@ const  BurgerConstructor = (props) => {
                 element = {...element, elementIndex: 0}
                 dispatch(addToOrder(element)); 
             } else {
-                element = {...element, elementIndex: elementIndex}
+                element = {...element, elementIndex: elementIndex, uud: uuidv4()}
                 dispatch(addToOrder(element));     
                 setElementIndex(elementIndex + 1); 
             }
@@ -66,7 +66,7 @@ const  BurgerConstructor = (props) => {
             <ul className={styles.burgerConstructor__ingredients + " "}>   
                 {data.map( element => {
                     if (element.type !== 'bun') { 
-                        return <IngredientInOrder onClickDeleteElement = {(element) => onClickDeleteElement(element)} element={element} moveListItem={moveListItem} key={uuidv4()}/>
+                        return <IngredientInOrder onClickDeleteElement = {(element) => onClickDeleteElement(element)} element={element} moveListItem={moveListItem} key={element.uud}/>
                     }                    
                 })}
             </ul>
@@ -155,5 +155,6 @@ interface Element {
     elementIndex: number   
     id: string
     type: string
+    uud: string
 }
 export default BurgerConstructor;

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { api, checkResponse } from "../../utils/constants";
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
@@ -26,7 +25,7 @@ function getIngredientsFailed() {
 
 export function getIngredients(dispatch) {  
     try {
-        dispatch(getIngredientsRequest);
+        dispatch(getIngredientsRequest());
         return fetch(api + 'ingredients')
         .then(checkResponse) 
         .then(json => {
@@ -34,6 +33,6 @@ export function getIngredients(dispatch) {
         })        
     }    
     catch(error: any) {
-        dispatch(getIngredientsFailed);
+        dispatch(getIngredientsFailed());
     }
 }

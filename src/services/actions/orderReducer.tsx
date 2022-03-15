@@ -1,4 +1,3 @@
-import axios from "axios";
 import { api, checkResponse } from "../../utils/constants";
 
 export const ADD_TO_ORDER = 'ADD_TO_ORDER';
@@ -56,7 +55,7 @@ export function postOrder(dataForOrder) {
             body: JSON.stringify({ "ingredients": dataForOrder })
         }  
         try {
-            dispatch(postOrderRequest);
+            dispatch(postOrderRequest());
             return fetch(api + 'orders', options)
             .then(checkResponse) 
             .then(json => {
@@ -64,7 +63,7 @@ export function postOrder(dataForOrder) {
             })        
         }    
         catch(error: any) {
-            dispatch(postOrderFailed);
+            dispatch(postOrderFailed());
         }
     };
 }
