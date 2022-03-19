@@ -67,3 +67,7 @@
 .burgerIngredients__price {
     padding-right: 9px;
 }
+
+.burgerIngredients__counter {
+    position: relative;
+}
