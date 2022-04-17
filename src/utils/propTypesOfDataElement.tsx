@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+
 const propTypesOfDataElement = PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
