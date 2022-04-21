@@ -1,7 +1,7 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useState } from "react";
 import styles from './pages.module.css';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { loginUser } from "../services/actions/user";
 
@@ -13,7 +13,7 @@ const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
+    const loggedIn = useSelector((state:RootState) => state.user.loggedIn); 
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
     }
@@ -27,6 +27,14 @@ const LoginPage = () => {
         history.replace({ pathname: '/' });
     };
 
+    if (loggedIn) {
+        return (
+          <Redirect
+            to={ state?.from || '/' }
+          />
+        );
+    }
+    
     return (  
         <div className={styles.wrapper}>
             <h2 className='text text_type_main-medium mb-6'>Вход</h2>

@@ -255,8 +255,16 @@ export function loginUser(email, password) {
             .then(res => {
                 dispatch(loginUserSuccess(res));
                 dispatch(setLoggedIn());
-                localStorage.setItem('accessToken', res.accessToken.split('Bearer ')[1])
-                localStorage.setItem('refreshToken', res.refreshToken);
+                // устанавливаем токен
+                let authToken;
+                res.headers.forEach(header => {
+                    if (header.indexOf('Bearer') === 0) {
+                        authToken = header.split('Bearer ')[1];
+                    }
+                });
+                if (authToken) {
+                    setCookie('token', authToken);
+                }
                 return res;
             });
         }
@@ -266,6 +274,40 @@ export function loginUser(email, password) {
         }
     };
 }
+
+export function deleteCookie(name) {
+    setCookie(name, null, { expires: -1 });
+} 
+
+export function getCookie(name) {
+    const matches = document.cookie.match(
+      new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+    );
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+export function setCookie(name, value, props) {
+    props = props || {};
+    let exp = props.expires;
+    if (typeof exp == 'number' && exp) {
+        const d = new Date();
+        d.setTime(d.getTime() + exp * 1000);
+        exp = props.expires = d;
+    }
+    if (exp && exp.toUTCString) {
+        props.expires = exp.toUTCString();
+    }
+    value = encodeURIComponent(value);
+    let updatedCookie = name + '=' + value;
+    for (const propName in props) {
+        updatedCookie += '; ' + propName;
+        const propValue = props[propName];
+        if (propValue !== true) {
+            updatedCookie += '=' + propValue;
+        }
+    }
+    document.cookie = updatedCookie;
+} 
 
 export function refreshToken() {
     return async (dispatch) => {
@@ -368,8 +410,7 @@ export function logoutUser() {
             return fetch(api + 'auth/logout', requestOptions)
                 .then(checkResponse) 
                 .then(res => {
-                    localStorage.removeItem('accessToken');
-                    localStorage.removeItem('refreshToken');
+                    deleteCookie('token');
                     dispatch(logoutUserSuccess(res));
                     dispatch(setNotLoggedIn());
                     return res;

@@ -1,6 +1,6 @@
 
 import {  useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useHistory, useLocation } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from './pages.module.css';
@@ -16,16 +16,21 @@ import OrderDetails from '../components/OrderDetails/OrderDetails';
 
 function HomePage() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const [isVisibleOrder, setIsVisibleOrder] = useState(false);
+    const loggedIn = useSelector((state:RootState) => state.user.loggedIn);
+    const location = useLocation();
 
     const item = useSelector((state:RootState) => state.ingredientDetails.ingredient);
     const data = useSelector((state:RootState) => state.order.ingredients);
 
     {/* открытие и закрытие  деталей ингредиента */}
     const openItem = (item) => {
+        history.replace({ pathname: '/', state: { background: location }});
         dispatch(showIngredientDetails(item));
     }  
     const closeItem = () => {
+        history.goBack();
         dispatch(closeIngredientDetails(item));
     }
 
@@ -35,12 +40,17 @@ function HomePage() {
     }
 
     function openOrder () {
-        const dataForOrder: string[] = [];
-        data.forEach(element =>{
-            dataForOrder.push(element._id);
-        })
-        dispatch(postOrder(dataForOrder));
-        setIsVisibleOrder(!isVisibleOrder);
+        if (loggedIn) {
+            const dataForOrder: string[] = [];
+            data.forEach(element =>{
+                dataForOrder.push(element._id);
+            })
+            dispatch(postOrder(dataForOrder));
+            setIsVisibleOrder(!isVisibleOrder);
+        } else {
+            // нужно сохранить путь в куки и перейти на логин
+            history.replace({ pathname: '/login' });
+        }
     }
 
     {/* получаем данные */}

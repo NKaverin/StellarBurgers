@@ -15,7 +15,9 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 const RouteSwitch = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const location = useLocation();
+    const background = location.state && location.state.background;
     const loggedIn = useSelector((state:RootState) => state.user.loggedIn);
 
     function checkToken() {
@@ -39,12 +41,12 @@ const RouteSwitch = () => {
     );
 
     return (
-        <Switch location = {location}>
+        <Switch location = {location || background}>
             <Route exact path='/'>
-                {loggedIn ? <HomePage/> : <LoginPage/>}
+                <HomePage/>
             </Route>
             <Route path='/login'>
-                <LoginPage/>
+                {loggedIn ? history.replace({ pathname: '/' }) : <LoginPage/>}
             </Route>
             <Route path='/register'>
                 {loggedIn ? <HomePage/> : <RegisterPage/>}          
@@ -58,10 +60,10 @@ const RouteSwitch = () => {
                 }          
             </ProtectedRoute>          
             <Route path='/profile'>
-                <ProfilePage/>
+                {loggedIn ? <ProfilePage/> : <LoginPage/>} 
             </Route>
             <Route path='/ingredients/:id'>
-                <IngredientIDPage/>
+                {background && (<IngredientIDPage/>)}
             </Route>      
             <Route path='*'>
                 <NotFoundPage/>
