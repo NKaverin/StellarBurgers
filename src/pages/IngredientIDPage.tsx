@@ -11,7 +11,7 @@ const IngredientIDPage = () => {
     const { id } = useParams();  
     const items = useSelector((state:RootState) => state.ingredients.items);
     const item = items.find((element) => element._id === id);  
-    console.log('asd')
+
     useEffect(() => {
         dispatch(getIngredients);
     }, []);
