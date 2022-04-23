@@ -242,7 +242,10 @@ export function loginUser(email, password) {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json', 
+
+            },
             body: JSON.stringify({
                 'email': email,
                 'password': password
@@ -256,15 +259,11 @@ export function loginUser(email, password) {
                 dispatch(loginUserSuccess(res));
                 dispatch(setLoggedIn());
                 // устанавливаем токен
-                let authToken;
-                res.headers.forEach(header => {
-                    if (header.indexOf('Bearer') === 0) {
-                        authToken = header.split('Bearer ')[1];
-                    }
-                });
+                const authToken = res.accessToken.split('Bearer ')[1];
                 if (authToken) {
-                    setCookie('token', authToken);
+                    setCookie('token', authToken, {});
                 }
+                setCookie('refreshToken', res.refreshToken, {});
                 return res;
             });
         }
@@ -281,7 +280,7 @@ export function deleteCookie(name) {
 
 export function getCookie(name) {
     const matches = document.cookie.match(
-      new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+        new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
@@ -311,12 +310,12 @@ export function setCookie(name, value, props) {
 
 export function refreshToken() {
     return async (dispatch) => {
-        const refreshToken = localStorage.getItem('refreshToken');
+        const refresh= getCookie('refreshToken');
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                'token': refreshToken
+                'token': refresh
             })
         }
         try {
@@ -326,8 +325,11 @@ export function refreshToken() {
             .then(res => {
                 dispatch(refreshTokenSuccess(res));
                 dispatch(setLoggedIn());
-                localStorage.setItem('accessToken', res.accessToken.split('Bearer ')[1]);
-                localStorage.setItem('refreshToken', res.refreshToken);
+                const authToken = res.accessToken.split('Bearer ')[1];
+                if (authToken) {
+                    setCookie('token', authToken, {});
+                }
+                setCookie('refreshToken', res.refreshToken, {});
                 return res;
             });
         }
@@ -339,25 +341,46 @@ export function refreshToken() {
 }
 
 export function getUser() {
+    const token = getCookie('token');
+    const refresh = getCookie('refreshToken');
+    if (!token && refresh) {
+        return refreshToken();
+    } 
+    // если нет токенов то возвращаем пустой результат
+    if (!token && !refresh) {
+        return async () => {}
+    } 
     return async (dispatch) => {
-        const accessToken = localStorage.getItem('accessToken');
         const requestOptions = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
+                Authorization: 'Bearer ' + token
             },
         };
         try {
             dispatch(getUserRequest());
             return fetch(api + 'auth/user', requestOptions)
-            .then(checkResponse)
+            .then( res => {
+                if (res.status === 403) {
+                    return 'error';
+                } else {
+                    return checkResponse(res)
+                }
+
+            })
             .then(res => {
-                dispatch(getUserSuccess(res));
-                return res.success;
+                if (res === 'error') {
+                    return true;
+                } else {
+                    dispatch(getUserSuccess(res));
+                    dispatch(loginUserSuccess(res));
+                    dispatch(setLoggedIn());
+                    return res.success;
+                }
             });
         }
-        catch(error) {
+        catch(error:any) {
             dispatch(getUserFailed());
             console.log(error);
         }
@@ -365,13 +388,21 @@ export function getUser() {
 }
 
 export function patchUser(name, email, password) {
+    const token = getCookie('token');
+    const refresh = getCookie('refreshToken');
+    if (!token && refresh) {
+        return refreshToken();
+    } 
+    // если нет токенов то возвращаем пустой результат
+    if (!token && !refresh) {
+        return async () => {}
+    } 
     return async (dispatch) => {
-        const accessToken = localStorage.getItem('accessToken')
         const requestOptions = {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
                 'email': email,
@@ -384,9 +415,9 @@ export function patchUser(name, email, password) {
             return fetch(api + 'auth/user', requestOptions)
                 .then(checkResponse) 
                 .then(res => {
-                dispatch(patchUserSuccess(res));
-                return res;
-            });
+                    dispatch(patchUserSuccess(res));
+                    return res;
+                });
         }
         catch(error) {
             dispatch(patchUserFailed());
@@ -397,7 +428,7 @@ export function patchUser(name, email, password) {
 
 export function logoutUser() {
     return async (dispatch) => {
-        const refreshToken = localStorage.getItem('refreshToken')
+        const refreshToken = getCookie('refreshToken')
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -411,6 +442,7 @@ export function logoutUser() {
                 .then(checkResponse) 
                 .then(res => {
                     deleteCookie('token');
+                    deleteCookie('refreshToken');
                     dispatch(logoutUserSuccess(res));
                     dispatch(setNotLoggedIn());
                     return res;

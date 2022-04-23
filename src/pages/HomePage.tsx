@@ -1,7 +1,8 @@
 
 import {  useEffect, useState } from 'react';
-import { useDispatch, useSelector, useHistory, useLocation } from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { DndProvider } from "react-dnd";
+import { useHistory, useLocation, Redirect, Link } from 'react-router-dom';
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from './pages.module.css';
 import { RootState } from '../services/redusers/rootReduser';
@@ -26,11 +27,11 @@ function HomePage() {
 
     {/* открытие и закрытие  деталей ингредиента */}
     const openItem = (item) => {
-        history.replace({ pathname: '/', state: { background: location }});
-        dispatch(showIngredientDetails(item));
+        history.replace({ pathname: '/ingredients/' + item._id, state: { background: {...location, pathname: '/ingredients/' + item._id}}} );
+        dispatch(showIngredientDetails(item));       
     }  
     const closeItem = () => {
-        history.goBack();
+        history.replace({ pathname: '/', state: { background: null }});
         dispatch(closeIngredientDetails(item));
     }
 
@@ -40,6 +41,7 @@ function HomePage() {
     }
 
     function openOrder () {
+        
         if (loggedIn) {
             const dataForOrder: string[] = [];
             data.forEach(element =>{
@@ -48,8 +50,7 @@ function HomePage() {
             dispatch(postOrder(dataForOrder));
             setIsVisibleOrder(!isVisibleOrder);
         } else {
-            // нужно сохранить путь в куки и перейти на логин
-            history.replace({ pathname: '/login' });
+            history.replace({ pathname: '/login', state: { from: location.pathname } }); 
         }
     }
 

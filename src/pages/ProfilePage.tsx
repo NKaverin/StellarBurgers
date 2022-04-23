@@ -65,8 +65,10 @@ const ProfilePage = () => {
     };
 
     const cancelHandler = () => {
-        setName(user.name);
-        setEmail(user.email);
+        if (user) {
+            setName(user.name);
+            setEmail(user.email);
+        }
         setPassword('');
         setIsChenged(false);
     };
@@ -77,7 +79,7 @@ const ProfilePage = () => {
 
     const logout = async () => {  
         await dispatch(logoutUser());
-        history.replace({ pathname: '/login' }); 
+        history.replace({ pathname: '/login'}); 
     };
 
     useEffect(() => {
@@ -85,8 +87,10 @@ const ProfilePage = () => {
     }, []);
 
     useEffect(() => {
-        setName(user.name);
-        setEmail(user.email);
+        if (user) {
+            setName(user.name);
+            setEmail(user.email);
+        }
     }, [user]);
 
     return (

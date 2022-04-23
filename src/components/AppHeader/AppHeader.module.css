@@ -22,8 +22,17 @@
     flex-direction: row;
 }
 
-.nav__button {
+.nav__buttonWrapper {
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.nav__button {
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
 }

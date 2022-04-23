@@ -1,9 +1,10 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useState } from "react";
 import styles from './pages.module.css';
-import { useHistory, Redirect } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useHistory, Redirect, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../services/actions/user";
+import { RootState } from "../services/redusers/rootReduser";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
@@ -14,6 +15,8 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const loggedIn = useSelector((state:RootState) => state.user.loggedIn); 
+    const { state } = useLocation();
+
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
     }
@@ -24,14 +27,13 @@ const LoginPage = () => {
     const submitHandler = async (e) => { 
         e.preventDefault();
         await dispatch(loginUser(email, password)); 
-        history.replace({ pathname: '/' });
+        history.replace({ pathname: state?.from || '/' });
     };
 
     if (loggedIn) {
+        console.log('редирект')
         return (
-          <Redirect
-            to={ state?.from || '/' }
-          />
+            <Redirect to={ state?.from || '/' }/>
         );
     }
     
