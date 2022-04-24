@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, Switch, Route, useHistory, Redirect } from "react-router-dom";
+import {  useDispatch, useSelector } from "react-redux";
+import { useLocation, Switch, Route, Redirect } from "react-router-dom";
 import ForgotPasswordPage from "../../pages/ForgotPasswordPage";
 import HomePage from "../../pages/HomePage";
 import IngredientIDPage from "../../pages/IngredientIDPage";
@@ -9,17 +9,21 @@ import NotFoundPage from "../../pages/NotFoundPage";
 import ProfilePage from "../../pages/ProfilePage";
 import RegisterPage from "../../pages/RegisterPage";
 import ResetPasswordPage from "../../pages/ResetPasswordPage";
-import { getUser, refreshToken, setLoggedIn, setNotLoggedIn } from "../../services/actions/user";
+import { getIngredients } from "../../services/actions/ingredients";
 import { RootState } from "../../services/redusers/rootReduser";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 const RouteSwitch = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
     const location = useLocation();
     const background = location.state && location.state.background;
     const loggedIn = useSelector((state:RootState) => state.user.loggedIn);                   
     const item = useSelector((state:RootState) => state.ingredientDetails.ingredient);
+    
+    {/* получаем данные */}
+    useEffect(() => {
+        dispatch(getIngredients);
+    }, []);
 
     return (
         <>
@@ -46,7 +50,7 @@ const RouteSwitch = () => {
                 </ProtectedRoute>
                 <Route path='/ingredients/:id'>
                     {item && <HomePage/>}
-                    {!background && <NotFoundPage/>}
+                    {!background && <IngredientIDPage/>}
                 </Route>
                 <Route path='*'>
                     {!background && (<NotFoundPage/>)}
@@ -55,9 +59,9 @@ const RouteSwitch = () => {
             </Switch>
                         
             {background && !item && (
-                    <Route path='/ingredients/:id'>
-                        <IngredientIDPage/>
-                    </Route>
+                <Route path='/ingredients/:id'>
+                    <IngredientIDPage/>
+                </Route>
             )}
             
         </>     

@@ -261,7 +261,7 @@ export function loginUser(email, password) {
                 // устанавливаем токен
                 const authToken = res.accessToken.split('Bearer ')[1];
                 if (authToken) {
-                    setCookie('token', authToken, {});
+                    setCookie('token', authToken, { expires: 30 });
                 }
                 setCookie('refreshToken', res.refreshToken, {});
                 return res;
@@ -290,6 +290,7 @@ export function setCookie(name, value, props) {
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {
         const d = new Date();
+
         d.setTime(d.getTime() + exp * 1000);
         exp = props.expires = d;
     }
@@ -343,13 +344,12 @@ export function refreshToken() {
 export function getUser() {
     const token = getCookie('token');
     const refresh = getCookie('refreshToken');
-    if (!token && refresh) {
-        return refreshToken();
-    } 
+
     // если нет токенов то возвращаем пустой результат
     if (!token && !refresh) {
         return async () => {}
     } 
+
     return async (dispatch) => {
         const requestOptions = {
             method: 'GET',
@@ -361,23 +361,22 @@ export function getUser() {
         try {
             dispatch(getUserRequest());
             return fetch(api + 'auth/user', requestOptions)
-            .then( res => {
-                if (res.status === 403) {
-                    return 'error';
-                } else {
-                    return checkResponse(res)
-                }
-
-            })
             .then(res => {
-                if (res === 'error') {
-                    return true;
+                if (res.status === 403) {
+                    return dispatch(refreshToken())
+                    .then(() => {return dispatch(getUser())})
+                    .then(() => {return false})
                 } else {
+                    return checkResponse(res);
+                }
+            }) 
+            .then(res => {
+                if (res) {             
                     dispatch(getUserSuccess(res));
                     dispatch(loginUserSuccess(res));
                     dispatch(setLoggedIn());
                     return res.success;
-                }
+                } 
             });
         }
         catch(error:any) {
@@ -390,9 +389,7 @@ export function getUser() {
 export function patchUser(name, email, password) {
     const token = getCookie('token');
     const refresh = getCookie('refreshToken');
-    if (!token && refresh) {
-        return refreshToken();
-    } 
+
     // если нет токенов то возвращаем пустой результат
     if (!token && !refresh) {
         return async () => {}
@@ -413,7 +410,14 @@ export function patchUser(name, email, password) {
         try {
             dispatch(patchUserRequest());
             return fetch(api + 'auth/user', requestOptions)
-                .then(checkResponse) 
+                .then(res => {
+                    if (res.status === 403) {
+                        return dispatch(refreshToken())
+                        .then(() => {return dispatch(patchUser(name, email, password))})
+                    } else {
+                        return checkResponse(res);
+                    }
+                }) 
                 .then(res => {
                     dispatch(patchUserSuccess(res));
                     return res;

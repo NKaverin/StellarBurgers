@@ -1,14 +1,14 @@
 
-import {  useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { useDispatch, useSelector} from 'react-redux';
 import { DndProvider } from "react-dnd";
-import { useHistory, useLocation, Redirect, Link } from 'react-router-dom';
+
+import { useHistory, useLocation } from 'react-router-dom';
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from './pages.module.css';
 import { RootState } from '../services/redusers/rootReduser';
 import { closeIngredientDetails, showIngredientDetails } from '../services/actions/ingredientDetails';
-import { postOrder } from '../services/actions/orderReducer';
-import { getIngredients } from '../services/actions/ingredients';
+import { postOrder, postOrderClose } from '../services/actions/orderReducer';
 import BurgerIngredients from '../components/BurgerIngrediens/BurgerIngredients';
 import BurgerConstructor from '../components/BurgerConstructor/BurgerConstructor';
 import Modal from '../components/Modal/Modal';
@@ -38,6 +38,7 @@ function HomePage() {
     {/* смена состояния для деталей заказа */}
     const closeOrder = () => {
         setIsVisibleOrder(!isVisibleOrder);
+        dispatch(postOrderClose());
     }
 
     function openOrder () {
@@ -53,11 +54,6 @@ function HomePage() {
             history.replace({ pathname: '/login', state: { from: location.pathname } }); 
         }
     }
-
-    {/* получаем данные */}
-    useEffect(() => {
-        dispatch(getIngredients);
-    }, []);
 
     return (
         <>

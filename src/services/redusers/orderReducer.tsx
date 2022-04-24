@@ -1,4 +1,4 @@
-import { ADD_TO_ORDER, POST_ORDER_FAILED, POST_ORDER_REQUEST, POST_ORDER_SUCCESS, REMOVE_FROM_ORDER, REORDER_ITEMS } from '../actions/orderReducer';
+import { ADD_TO_ORDER, POST_ORDER_CLOSE, POST_ORDER_FAILED, POST_ORDER_REQUEST, POST_ORDER_SUCCESS, REMOVE_FROM_ORDER, REORDER_ITEMS } from '../actions/orderReducer';
 
 interface Element {
     _id: string,
@@ -16,8 +16,6 @@ interface Element {
     elementIndex: number,
     uud: string
 }
-
-const pust:Array<Element> = [];
 
 // самая популярная булка в нашей бургерной
 const initialState  = {
@@ -92,6 +90,12 @@ export const orderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 orderId: action.order
+            };
+        }
+        case POST_ORDER_CLOSE: {
+            return {
+                ...state,
+                orderId: null
             };
         }
         case POST_ORDER_FAILED: {

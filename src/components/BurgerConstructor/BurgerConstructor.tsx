@@ -99,7 +99,7 @@ const IngredientInOrder = (props) => {
     const element = props.element;
     const ref = useRef<HTMLLIElement>(null)
 
-    const [{ isDragging }, dragRef] = useDrag({
+    const [ , dragRef] = useDrag({
         type: 'orderInOrder',  
         item: element,
         collect: (monitor: any) => ({

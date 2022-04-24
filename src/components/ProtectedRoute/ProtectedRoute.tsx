@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children, ...restOfProps }) {
 
     const init = async () => {
         await dispatch(getUser());
-        setUserLoaded(true);
+        setUserLoaded(true);        
     };
 
     useEffect(() => {

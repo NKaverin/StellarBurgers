@@ -82,9 +82,6 @@ const ProfilePage = () => {
         history.replace({ pathname: '/login'}); 
     };
 
-    useEffect(() => {
-        dispatch(getUser());
-    }, []);
 
     useEffect(() => {
         if (user) {
@@ -92,6 +89,7 @@ const ProfilePage = () => {
             setEmail(user.email);
         }
     }, [user]);
+
 
     return (
         <div className={styles.profileWrapper}>
