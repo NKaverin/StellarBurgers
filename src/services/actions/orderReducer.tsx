@@ -6,6 +6,7 @@ export const REORDER_ITEMS = 'REORDER_ITEMS';
 export const POST_ORDER_REQUEST = 'POST_ORDER_REQUEST';
 export const POST_ORDER_SUCCESS = 'POST_ORDER_SUCCESS';
 export const POST_ORDER_FAILED = 'POST_ORDER_FAILED';
+export const POST_ORDER_CLOSE = 'POST_ORDER_CLOSE';
 
 function postOrderRequest() {
     return {
@@ -16,6 +17,12 @@ function postOrderSuccess(order) {
     return {
         type: POST_ORDER_SUCCESS, 
         order
+    }
+}
+
+export function postOrderClose() {
+    return {
+        type: POST_ORDER_CLOSE
     }
 }
 

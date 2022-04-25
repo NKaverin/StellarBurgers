@@ -2,10 +2,3 @@
     background: #131316;
     height: 100vh;
 }
-
-.page {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: center;
-}
