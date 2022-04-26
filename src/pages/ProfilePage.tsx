@@ -5,7 +5,8 @@ import { getUser, logoutUser, patchUser } from "../services/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../services/redusers/rootReduser";
 import { useHistory, useLocation } from 'react-router-dom';
-
+import { wsConnectionStart, wsConnectionClosed } from '../services/actions/ws';
+import OrdersFeed from "../components/OrdersFeed";
 
 const ProfilePage = () => {
     const dispatch = useDispatch();   
@@ -24,10 +25,12 @@ const ProfilePage = () => {
         password: false,
     });
 
+    const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
+
     const user = useSelector((state:RootState) => state.user.user);
 
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('') ; 
+    const [email, setEmail] = useState('') ;
 
     const onChangeName = (e) => {
         setName(e.target.value);
@@ -59,7 +62,7 @@ const ProfilePage = () => {
         setIsChenged(true);
     }
 
-    const submitHandler = async (e) => { 
+    const submitHandler = async (e) => {
         e.preventDefault();
         await dispatch(patchUser(name, email, password));
     };
@@ -75,9 +78,9 @@ const ProfilePage = () => {
 
     
     const activeProfile = (location.pathname === '/profile');
-    const activeOrders = (location.pathname === '/profile/orders');     
+    const activeOrders = (location.pathname === '/profile/orders');
 
-    const logout = async () => {  
+    const logout = async () => {
         await dispatch(logoutUser());
         history.replace({ pathname: '/login'}); 
     };
@@ -90,9 +93,24 @@ const ProfilePage = () => {
         }
     }, [user]);
 
+    useEffect(
+        () => {      
+            dispatch(wsConnectionStart());
+        }, [dispatch]
+    );
+
+    useEffect(
+        () => {
+            return () => {
+                if (wsConnected) {
+                    dispatch(wsConnectionClosed())
+                }        
+            }
+        }, [wsConnected, dispatch]
+    )
 
     return (
-        <div className={styles.profileWrapper}>
+        <div className={styles.horizontalWrapper}>
             <div className={styles.sideMenu__wrapper + ' mr-15 pl-5'}>
                 <ul className={styles.sideMenu__list}>
                     <li>
@@ -115,7 +133,7 @@ const ProfilePage = () => {
                     В этом разделе вы можете изменить свои персональные данные
                 </p>
             </div>
-            <div>
+            {activeProfile &&(<div>
                 <form className={styles.container} onSubmit={submitHandler}>
                     <div className={styles.item +" mb-6"}>
                         <Input
@@ -164,7 +182,10 @@ const ProfilePage = () => {
                     </div>)}
                 </form>
                 
-            </div>
+            </div>)}
+
+            {activeOrders && (<OrdersFeed />)}
+            
         </div>
     )
 }

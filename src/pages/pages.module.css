@@ -28,7 +28,7 @@
     max-width: 320px;
 }
 
-.profileWrapper {
+.horizontalWrapper {
     display: flex;
     flex-direction: row;
     margin: 120px auto 0;
@@ -50,4 +50,26 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+.orderDone {
+    color: #00CCCC;
+}
+
+.ingredients {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.ingredients::-webkit-scrollbar {
+    background: #2F2F37;
+    width: 8px;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+    background: #8585AD;
+    border: 3px solid #8585AD;
 }

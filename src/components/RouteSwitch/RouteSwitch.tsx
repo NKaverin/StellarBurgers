@@ -19,8 +19,8 @@ const RouteSwitch = () => {
     const background = location.state && location.state.background;
     const loggedIn = useSelector((state:RootState) => state.user.loggedIn);                   
     const item = useSelector((state:RootState) => state.ingredientDetails.ingredient);
-    
-    {/* получаем данные */}
+    const getOrdersSuccess = useSelector((state:RootState) => state.ws.getOrdersSuccess);
+
     useEffect(() => {
         dispatch(getIngredients);
     }, []);
@@ -52,6 +52,9 @@ const RouteSwitch = () => {
                     {item && <HomePage/>}
                     {!background && <IngredientIDPage/>}
                 </Route>
+                <Route path='/feed'>
+                    <FeedPage/>
+                </Route>
                 <Route path='*'>
                     {!background && (<NotFoundPage/>)}
                 </Route>
@@ -61,6 +64,11 @@ const RouteSwitch = () => {
             {background && !item && (
                 <Route path='/ingredients/:id'>
                     <IngredientIDPage/>
+                </Route>
+            )}
+            {background && getOrdersSuccess && (
+                <Route exact path='/feed/:id'>
+                    <OrderDetailPage/>
                 </Route>
             )}
             
