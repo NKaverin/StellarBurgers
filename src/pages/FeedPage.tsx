@@ -10,8 +10,6 @@ const FeedPage = () => {
     const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
     const orders = useSelector((state:RootState) => state.ws.orders);
     const getOrdersSuccess = useSelector((state:RootState) => state.ws.getOrdersSuccess);
-
-
     const total = useSelector((state:RootState) => state.ws.total);
     const totalToday = useSelector((state:RootState) => state.ws.totalToday);
 

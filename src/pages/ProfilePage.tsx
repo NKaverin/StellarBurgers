@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../services/redusers/rootReduser";
 import { useHistory, useLocation } from 'react-router-dom';
 import { wsConnectionStart, wsConnectionClosed } from '../services/actions/ws';
-import OrdersFeed from "../components/OrdersFeed";
+import OrdersFeed from "../components/OrdersFeed/OrdersFeed";
 
 const ProfilePage = () => {
     const dispatch = useDispatch();   
