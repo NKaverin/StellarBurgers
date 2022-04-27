@@ -5,6 +5,7 @@ import { RootState } from "../services/redusers/rootReduser";
 import { wsConnectionStart, wsConnectionClosed } from '../services/actions/ws';
 import { useParams }from 'react-router-dom';
 import { fotmatDate, getStatusText } from '../utils/constants';
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const OrderDetailPage = () => { 
     const dispatch = useDispatch();  
@@ -14,11 +15,20 @@ const OrderDetailPage = () => {
     const order = orders.find((element) => element._id === id);
     const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
 
-    const ingredients = useSelector((state:RootState) => state.ingredients.items);;
-    const ingredientsInOrder = ingredients.filter((element) => order.ingredients.includes(element._id)).map((element) => element && {...element, __v: order.ingredients.filter(id => id===element._id).length});  
+    const ingredients = useSelector((state:RootState) => state.ingredients.items);
 
-    const sumOrderPrice = () => {
-        return ingredientsInOrder.reduce((total, element) => { return total + element.price }, 0)
+    const sumOrderPrice = (ingredientsInOrder) => {    
+        return ingredientsInOrder.reduce((total, element) => { return total + ingredients.filter((e) => element === e._id)[0].price}, 0);
+    }
+
+    const getStatusColorClass = (status) => {
+        if (status === 'pending' || status === 'created') {
+            return '';
+        }
+        if (status === 'done') {
+            return styles.orderDone;
+        }
+        return styles.orderCanceled;
     }
 
     useEffect(
@@ -37,36 +47,39 @@ const OrderDetailPage = () => {
         }, [wsConnected, dispatch]
     )
 
-    if (!getOrdersSuccess) {
+    if (!getOrdersSuccess || !order) {
         return null;
-    }
-
-    if (getOrdersSuccess) {
+    } else {
         return (
-        <div className={styles.wrapper}>
-            <p className={styles.aaaaaa + " text text_type_digits-default"}>{'#' + order.number}</p>
-            <div className={styles.container}>      
-                <p className="text text_type_main-medium mb-3 mt-10">{order.name}</p>
-                <p className="text text_type_main-small mb-15">{getStatusText(order.status)}</p>
-                <p className="text text_type_main-medium mb-6">Состав:</p>
-                <ul className={styles.ingredients}>
-                    {ingredientsInOrder.map((element, index) => {
-                        <li className={styles.ingredients__item + ' mb-4 mr-6'} key ={index}>
-                            <img src={element.image} alt={element.name} className={styles.image}/>
-                            <p className="text text_type_main-default ml-4">{element.name}</p>
-                            <div className={styles.ingredients__total}>
-                                <p className="text text_type_digits-default pl-4">{element.__v}</p>
-                                <p className="text text_type_digits-default">x</p>
-                                <p className="text text_type_digits-default">{element.price}</p>
-                                <CurrencyIcon type="primary" />
-                            </div>
-                        </li>
-                    })}
-                </ul>
-                <div className={styles.horizontalWrapper + ' mt-10'}>
-                    <p className="text text_type_main-small text_color_inactive">{fotmatDate(order.createdAt)}</p>
-                    <p className={styles.ingredients__total + " text text_type_digits-default mr-2"}>{sumOrderPrice()}</p>
-                    <CurrencyIcon type="primary" />
+        <div className={styles.orderDetail__wrapper}>
+            <div className={styles.orderDetail__container + " mt-6 mb-6"}>
+                <p className={styles.order__centered + " text text_type_digits-default"}>{'#' + order.number}</p>
+                <div>      
+                    <p className="text text_type_main-medium mb-3 mt-10">{order.name}</p>
+                    <p className={getStatusColorClass(order.status) + " text text_type_main-small mb-15"}>{getStatusText(order.status)}</p>
+                    <p className="text text_type_main-medium mb-6">Состав:</p>
+                    <ul className={styles.orderDetail__ingredients}>
+                        {order.ingredients.map((orderIngredient, index) => {
+                            const element = ingredients.filter((e) => orderIngredient === e._id)[0];
+                            return (
+                                <li className={styles.orderDetail__item  + ' mb-4 mr-6'} key ={index}>
+                                    <img src={element.image} alt={element.name} className={styles.orderDetail__image}/>
+                                    <p className="text text_type_main-default ml-4">{element.name}</p>
+                                    <div className={styles.orderDetail__itemTotal}>
+                                        <p className="text text_type_digits-default pl-4">{1}</p>
+                                        <p className="text text_type_digits-default">x</p>
+                                        <p className="text text_type_digits-default">{element.price}</p>
+                                        <CurrencyIcon type="primary" />
+                                    </div>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                    <div className={styles.orderDetail__total  + ' mt-10'}>
+                        <p className="text text_type_main-small text_color_inactive">{fotmatDate(order.createdAt)}</p>
+                        <p className={styles.orderDetail__totalPrice  + " text text_type_digits-default mr-2"}>{sumOrderPrice(order.ingredients)}</p>
+                        <CurrencyIcon type="primary" />
+                    </div>
                 </div>
             </div>
         </div> 

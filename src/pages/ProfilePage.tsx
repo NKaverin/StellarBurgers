@@ -1,7 +1,7 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useRef, useState } from "react";
 import styles from './pages.module.css';
-import { getUser, logoutUser, patchUser } from "../services/actions/user";
+import { logoutUser, patchUser } from "../services/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../services/redusers/rootReduser";
 import { useHistory, useLocation } from 'react-router-dom';
@@ -19,6 +19,7 @@ const ProfilePage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [validationForm, setValidationForm] = useState(false);
     const [isChanged, setIsChenged] = useState(false);
+    const getOrdersSuccess = useSelector((state:RootState) => state.ws.getOrdersSuccess);
     const [validationError, setValidationError] = useState({
         name: false,
         email: false,
@@ -26,7 +27,6 @@ const ProfilePage = () => {
     });
 
     const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
-
     const user = useSelector((state:RootState) => state.user.user);
 
     const [name, setName] = useState('');
@@ -85,6 +85,21 @@ const ProfilePage = () => {
         history.replace({ pathname: '/login'}); 
     };
 
+    useEffect(
+        () => {      
+            dispatch(wsConnectionStart());          
+        }, [dispatch]
+    );
+
+    useEffect(
+        () => {
+            return () => {
+                if (wsConnected) {          
+                    dispatch(wsConnectionClosed())
+                }        
+            }
+        }, [wsConnected, dispatch]
+    );
 
     useEffect(() => {
         if (user) {
@@ -93,21 +108,9 @@ const ProfilePage = () => {
         }
     }, [user]);
 
-    useEffect(
-        () => {      
-            dispatch(wsConnectionStart());
-        }, [dispatch]
-    );
-
-    useEffect(
-        () => {
-            return () => {
-                if (wsConnected) {
-                    dispatch(wsConnectionClosed())
-                }        
-            }
-        }, [wsConnected, dispatch]
-    )
+    if (!getOrdersSuccess) {
+        return null; 
+    }
 
     return (
         <div className={styles.horizontalWrapper}>

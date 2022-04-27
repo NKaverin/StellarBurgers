@@ -16,7 +16,7 @@ export const socket = (wsUrl, wsActions) => {
                 if (window.location.pathname.indexOf('/feed') === 0) {
                     socket = new WebSocket(`${wsUrl}/all`);          
                 } else if (window.location.pathname.indexOf('/profile/orders') === 0) {
-                    socket = new WebSocket(`${wsUrl}?token=${token}`);          
+                    socket = new WebSocket(`${wsUrl}?token=${token}`);   
                 }      
             } 
 

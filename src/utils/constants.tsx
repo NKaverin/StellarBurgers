@@ -13,11 +13,11 @@ export const fotmatDate = (date) => {
         return 'сегодня';
     }
     
-    const options = {weekday: 'long'};
+    const options:Intl.DateTimeFormatOptions = {weekday: 'long'};
     const day = currentDate.toLocaleString("ru", options);
     const GMTdifference = -currentDate.getTimezoneOffset()/60;
     const GMTsign = GMTdifference > 0 ? '+' : '-';
-    const optionsTime = {
+    const optionsTime:Intl.DateTimeFormatOptions = {
         hour: 'numeric',
         minute: 'numeric',
     };
@@ -34,10 +34,10 @@ export const getStatusText = (status) => {
             return 'Выполнен';
         }
         case 'pending': {
-            return 'Выполнен';
+            return 'Готовится';
         }
         case 'created': {
-            return 'Выполнен';
+            return 'Создан';
         }
         default: {
             return 'Отменен';
@@ -45,3 +45,4 @@ export const getStatusText = (status) => {
 
     }
 }
+

@@ -6,6 +6,13 @@
     padding-top: 180px;
 }
 
+.orderDetail__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -56,6 +63,10 @@
     color: #00CCCC;
 }
 
+.orderCanceled {
+    color: rgb(118, 42, 34);
+}
+
 .ingredients {
     list-style-type: none;
     margin: 0;
@@ -72,4 +83,86 @@
 .ingredients::-webkit-scrollbar-thumb {
     background: #8585AD;
     border: 3px solid #8585AD;
+}
+
+.orderNumbers {
+    display: flex;
+    flex-direction: column;   
+}
+
+.orderNumbers__horizontal {
+    display: flex;
+    flex-direction: row;   
+}
+
+.orderDetail__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 640px;
+    max-height: calc(100vh - 410px);
+
+}
+
+.order__centered {
+    align-self: center;
+}
+
+.orderDetail__ingredients {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;  
+    width: 100%;
+}
+
+.orderDetail__ingredients::-webkit-scrollbar {
+    background: #2F2F37;
+    width: 8px;
+}
+
+.orderDetail__ingredients::-webkit-scrollbar-thumb {
+    background: #8585AD;
+    border: 3px solid #8585AD;
+}
+
+.orderDetail__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.orderDetail__itemTotal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 9px;
+    margin-left: auto;
+}
+
+.orderDetail__image {
+    width: 64px;
+    height: 64px;
+    background-image: 
+        linear-gradient(#1C1C21, #1C1C21), 
+        linear-gradient(45deg,#801AB2,#4C4CFF);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    border: 2px solid transparent;
+    border-radius: 100px; 
+    object-fit: cover;
+    z-index: 1;
+}
+
+.orderDetail__total {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.orderDetail__totalPrice {
+    margin-left: auto;
 }

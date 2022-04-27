@@ -3,14 +3,8 @@ import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { socket } from './middleware/socket';
-import {
-    WS_CONNECTION_CLOSED,
-    WS_CONNECTION_ERROR,
-    WS_CONNECTION_START,
-    WS_CONNECTION_SUCCESS,
-    WS_GET_ORDERS,
-    WS_SEND_MESSAGE
-} from '../actions/wsActions';
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_SEND_MESSAGE } from './actions/ws';
+
 
 const wsActions = {
     wsInit: WS_CONNECTION_START,
@@ -24,7 +18,7 @@ const wsActions = {
 const wsUrl = 'wss://norma.nomoreparties.space/orders';
 
 
-const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware, socketMiddleware(wsUrl, wsActions)));
+const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware, socket(wsUrl, wsActions)));
 
 const store = createStore(rootReducer, composedEnhancer);
 export default store;

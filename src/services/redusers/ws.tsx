@@ -2,9 +2,9 @@ import {
     WS_CONNECTION_SUCCESS,
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
-    WS_GET_ORDERS
+    WS_GET_MESSAGE
 } from '../actions/ws';
- 
+
 const initialState = {
     wsConnected: false,
     getOrdersSuccess: false,
@@ -12,8 +12,8 @@ const initialState = {
     totalToday: 0,
     orders: [] 
 };
-  
-export const ws = (state, action) => {
+
+export const ws = (state = initialState, action) => {
     switch (action.type) {
         
         case WS_CONNECTION_SUCCESS:
@@ -31,10 +31,13 @@ export const ws = (state, action) => {
         case WS_CONNECTION_CLOSED:
             return {
                 ...state,
-                wsConnected: false
+                wsConnected: false,
+                orders: [],
+                total: 0,
+                totalToday: 0
             };
 
-        case WS_GET_ORDERS:
+        case WS_GET_MESSAGE:
             return {
                 ...state,
                 getOrdersSuccess: action.data.success,
