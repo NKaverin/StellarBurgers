@@ -20,6 +20,7 @@ export default function ProtectedRoute({ children, ...restOfProps }) {
         init();
     }, []);
 
+
     if (!isUserLoaded) {
         return null;
     }

@@ -60,12 +60,6 @@ const RouteSwitch = () => {
                 <ProtectedRoute exact path='/profile'>
                     <ProfilePage/>
                 </ProtectedRoute>
-                <ProtectedRoute exact path='/profile/orders'>
-                    <ProfilePage/>
-                </ProtectedRoute>
-                <ProtectedRoute exact path='/profile/orders/:id'>
-                    {!background && <OrderDetailPage/>}
-                </ProtectedRoute>
                 <Route path='/ingredients/:id'>
                     {item && <HomePage/>}
                     {!background && <IngredientIDPage/>}
@@ -76,6 +70,12 @@ const RouteSwitch = () => {
                 <Route path='/feed/:id'>
                     {!background && <OrderDetailPage/>}
                 </Route>
+                <ProtectedRoute exact path='/profile/orders'>
+                    <ProfilePage/>
+                </ProtectedRoute>
+                <ProtectedRoute exact path='/profile/orders/:id'>
+                    {!background && <OrderDetailPage/>}
+                </ProtectedRoute>
                 <Route path='*'>
                     {!background && (<NotFoundPage/>)}
                 </Route>

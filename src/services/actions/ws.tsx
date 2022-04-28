@@ -6,9 +6,10 @@ export const WS_GET_MESSAGE = 'WS_GET_MESSAGE';
 export const WS_SEND_MESSAGE = 'WS_SEND_MESSAGE';
 export const WS_GET_ORDERS = 'WS_GET_ORDERS';
 
-export const wsConnectionStart = () => {
+export const wsConnectionStart = (payload) => {
     return {
-        type: WS_CONNECTION_START
+        type: WS_CONNECTION_START,
+        payload:payload
     };
 };
 

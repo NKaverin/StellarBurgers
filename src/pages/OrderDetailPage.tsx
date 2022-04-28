@@ -3,9 +3,10 @@ import styles from './pages.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from "../services/redusers/rootReduser";
 import { wsConnectionStart, wsConnectionClosed } from '../services/actions/ws';
-import { useParams }from 'react-router-dom';
+import { useParams, useLocation }from 'react-router-dom';
 import { fotmatDate, getStatusText } from '../utils/constants';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { getCookie } from '../services/actions/user';
 
 const OrderDetailPage = () => { 
     const dispatch = useDispatch();  
@@ -14,8 +15,10 @@ const OrderDetailPage = () => {
     const getOrdersSuccess = useSelector((state:RootState) => state.ws.getOrdersSuccess);
     const order = orders.find((element) => element._id === id);
     const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
-
+    const location = useLocation();
+    const background = location.state && location.state.background;
     const ingredients = useSelector((state:RootState) => state.ingredients.items);
+    const activeProfile = (location.pathname.indexOf('/profile') === 0);  
 
     const sumOrderPrice = (ingredientsInOrder) => {    
         return ingredientsInOrder.reduce((total, element) => { return total + ingredients.filter((e) => element === e._id)[0].price}, 0);
@@ -31,16 +34,30 @@ const OrderDetailPage = () => {
         return styles.orderCanceled;
     }
 
+    const ingredientsInOrder:Array<any> = [];
+    ingredients.forEach(element => {
+        const count = order.ingredients.filter((e) => element._id === e).length;
+        if ( count !== 0) {
+            ingredientsInOrder.push({...element, count});
+        };
+    });
+
     useEffect(
         () => {
-            dispatch(wsConnectionStart());
+            if (!background) {
+                if (activeProfile) {
+                    dispatch(wsConnectionStart(`?token=${getCookie('token')}`));
+                }  else {
+                    dispatch(wsConnectionStart('/all'));
+                }
+            }
         }, [dispatch]
     );
 
     useEffect(
         () => {
             return () => {
-                if (wsConnected) {
+                if (wsConnected && !background) {
                     dispatch(wsConnectionClosed())
                 }
             }
@@ -59,14 +76,13 @@ const OrderDetailPage = () => {
                     <p className={getStatusColorClass(order.status) + " text text_type_main-small mb-15"}>{getStatusText(order.status)}</p>
                     <p className="text text_type_main-medium mb-6">Состав:</p>
                     <ul className={styles.orderDetail__ingredients}>
-                        {order.ingredients.map((orderIngredient, index) => {
-                            const element = ingredients.filter((e) => orderIngredient === e._id)[0];
+                        {ingredientsInOrder.map((element, index) => {
                             return (
                                 <li className={styles.orderDetail__item  + ' mb-4 mr-6'} key ={index}>
                                     <img src={element.image} alt={element.name} className={styles.orderDetail__image}/>
                                     <p className="text text_type_main-default ml-4">{element.name}</p>
                                     <div className={styles.orderDetail__itemTotal}>
-                                        <p className="text text_type_digits-default pl-4">{1}</p>
+                                        <p className="text text_type_digits-default pl-4">{element.count}</p>
                                         <p className="text text_type_digits-default">x</p>
                                         <p className="text text_type_digits-default">{element.price}</p>
                                         <CurrencyIcon type="primary" />

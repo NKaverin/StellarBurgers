@@ -1,12 +1,17 @@
 import styles from './/OrdersFeed.module.css';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 import { fotmatDate, getStatusText } from '../../utils/constants';
 import { RootState } from '../../services/redusers/rootReduser';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { wsConnectionClosed, wsConnectionStart } from '../../services/actions/ws';
+import { getCookie } from '../../services/actions/user';
 
 
 const OrdersFeed = () => {
+    const dispatch = useDispatch();
+    const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
     const location = useLocation();
     const history = useHistory();
     
@@ -17,7 +22,11 @@ const OrdersFeed = () => {
     const ingredients = useSelector((state:RootState) => state.ingredients.items);
 
     const onClick = (order_id) => {
-        history.replace({pathname: 'feed/' + order_id, state: { background: location } });
+        if (activeProfile) {
+            history.replace({pathname: 'orders/' + order_id, state: { background: location } });
+        }  else {
+            history.replace({pathname: 'feed/' + order_id, state: { background: location } });
+        }
     }
 
     const sumOrderPrice = (ingredientsInOrder) => {    
@@ -33,6 +42,28 @@ const OrdersFeed = () => {
         }
         return styles.orderCanceled;
     }
+
+    useEffect(
+        () => {      
+            if (activeProfile) {
+                dispatch(wsConnectionStart(`?token=${getCookie('token')}`));
+            }  else {
+                dispatch(wsConnectionStart('/all'));
+            }
+            
+        }, [dispatch]
+    );
+
+    useEffect(
+        () => {
+            return () => {
+                if (wsConnected) {          
+                    dispatch(wsConnectionClosed())
+                }        
+            }
+        }, [wsConnected, dispatch]
+    );
+
 
     if (!getOrdersSuccess) {
         return null;

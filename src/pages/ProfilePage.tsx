@@ -5,7 +5,6 @@ import { logoutUser, patchUser } from "../services/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../services/redusers/rootReduser";
 import { useHistory, useLocation } from 'react-router-dom';
-import { wsConnectionStart, wsConnectionClosed } from '../services/actions/ws';
 import OrdersFeed from "../components/OrdersFeed/OrdersFeed";
 
 const ProfilePage = () => {
@@ -19,18 +18,16 @@ const ProfilePage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [validationForm, setValidationForm] = useState(false);
     const [isChanged, setIsChenged] = useState(false);
-    const getOrdersSuccess = useSelector((state:RootState) => state.ws.getOrdersSuccess);
     const [validationError, setValidationError] = useState({
         name: false,
         email: false,
         password: false,
     });
 
-    const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
     const user = useSelector((state:RootState) => state.user.user);
 
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('') ;
+    const [email, setEmail] = useState('');
 
     const onChangeName = (e) => {
         setName(e.target.value);
@@ -85,22 +82,6 @@ const ProfilePage = () => {
         history.replace({ pathname: '/login'}); 
     };
 
-    useEffect(
-        () => {      
-            dispatch(wsConnectionStart());          
-        }, [dispatch]
-    );
-
-    useEffect(
-        () => {
-            return () => {
-                if (wsConnected) {          
-                    dispatch(wsConnectionClosed())
-                }        
-            }
-        }, [wsConnected, dispatch]
-    );
-
     useEffect(() => {
         if (user) {
             setName(user.name);
@@ -108,10 +89,8 @@ const ProfilePage = () => {
         }
     }, [user]);
 
-    if (!getOrdersSuccess) {
-        return null; 
-    }
 
+    
     return (
         <div className={styles.horizontalWrapper}>
             <div className={styles.sideMenu__wrapper + ' mr-15 pl-5'}>
