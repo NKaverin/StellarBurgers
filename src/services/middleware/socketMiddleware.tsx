@@ -9,7 +9,6 @@ export const socket = (wsUrl, wsActions) => {
             const { wsInit, onOpen, onError, onClose, onMessage, wsSendMessage } = wsActions;
             const token = getCookie('token');
             
-            console.log(action)
             if (type === wsInit) {
                 if (socket && socket.readyState === WebSocket.OPEN) {
                     socket.close();
