@@ -8,11 +8,7 @@ export function checkResponse(res) {
 }
 
 export const fotmatDate = (date) => {
-    const currentDate = new Date(date)
-    if (new Date().getDay() === currentDate.getDay()) {
-        return 'сегодня';
-    }
-    
+    const currentDate = new Date(date)    
     const options:Intl.DateTimeFormatOptions = {weekday: 'long'};
     const day = currentDate.toLocaleString("ru", options);
     const GMTdifference = -currentDate.getTimezoneOffset()/60;
@@ -23,6 +19,9 @@ export const fotmatDate = (date) => {
     };
     const time = currentDate.toLocaleString("ru", optionsTime);
     
+    if (new Date().getDay() === currentDate.getDay()) {
+        return `сегодня, ${time} i-GMT${GMTsign}${GMTdifference}`;
+    }
     return `${day.charAt(0).toUpperCase() + day.slice(1)}, ${time} i-GMT${GMTsign}${GMTdifference}`;
 }
 

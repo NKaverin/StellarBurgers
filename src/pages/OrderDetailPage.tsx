@@ -17,7 +17,7 @@ const OrderDetailPage = () => {
     const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
     const location = useLocation();
     const background = location.state && location.state.background;
-    const ingredients = useSelector((state:RootState) => state.ingredients.items);
+    const ingredients = useSelector((state:RootState) => state.ingredients.items) || [];
     const activeProfile = (location.pathname.indexOf('/profile') === 0);  
 
     const sumOrderPrice = (ingredientsInOrder) => {    
@@ -35,12 +35,14 @@ const OrderDetailPage = () => {
     }
 
     const ingredientsInOrder:Array<any> = [];
-    ingredients.forEach(element => {
-        const count = order.ingredients.filter((e) => element._id === e).length;
-        if ( count !== 0) {
-            ingredientsInOrder.push({...element, count});
-        };
-    });
+    if (order) {
+        ingredients.forEach(element => {
+            const count = order.ingredients.filter((e) => element._id === e).length;
+            if ( count !== 0) {
+                ingredientsInOrder.push({...element, count});
+            };
+        });
+    }
 
     useEffect(
         () => {
@@ -69,10 +71,10 @@ const OrderDetailPage = () => {
     } else {
         return (
         <div className={styles.orderDetail__wrapper}>
-            <div className={styles.orderDetail__container + " mt-6 mb-6"}>
-                <p className={styles.order__centered + " text text_type_digits-default"}>{'#' + order.number}</p>
+            <div className={styles.orderDetail__container + " pt-6 mb-6"}>
+                <p className={styles.order__centered + " pt-5 text text_type_digits-default"}>{'#' + order.number}</p>
                 <div>      
-                    <p className="text text_type_main-medium mb-3 mt-10">{order.name}</p>
+                    <p className="text text_type_main-default mb-3 mt-10">{order.name}</p>
                     <p className={getStatusColorClass(order.status) + " text text_type_main-small mb-15"}>{getStatusText(order.status)}</p>
                     <p className="text text_type_main-medium mb-6">Состав:</p>
                     <ul className={styles.orderDetail__ingredients}>

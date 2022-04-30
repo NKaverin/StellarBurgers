@@ -44,17 +44,6 @@ const OrdersFeed = () => {
     }
 
     useEffect(
-        () => {      
-            if (activeProfile) {
-                dispatch(wsConnectionStart(`?token=${getCookie('token')}`));
-            }  else {
-                dispatch(wsConnectionStart('/all'));
-            }
-            
-        }, [dispatch]
-    );
-
-    useEffect(
         () => {
             return () => {
                 if (wsConnected) {          
@@ -64,6 +53,17 @@ const OrdersFeed = () => {
         }, [wsConnected, dispatch]
     );
 
+    const init = async () => {
+        if (activeProfile) {
+            await dispatch(wsConnectionStart(`?token=${getCookie('token')}`));
+        }  else {
+            await dispatch(wsConnectionStart('/all'));
+        }       
+    };
+
+    useEffect(() => {
+        init();
+    }, []);
 
     if (!getOrdersSuccess) {
         return null;

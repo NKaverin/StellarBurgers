@@ -88,18 +88,22 @@ const RouteSwitch = () => {
                 </Route>
             )}
             {background && getOrdersSuccess && (
-                <Route exact path='/feed/:id'>
-                    <Modal closeHandler={closeItemFeed} title="Детали заказа">       
-                        <OrderDetailPage />
-                    </Modal>
-                </Route>
+                <Switch location = {location}>
+                    <Route exact path='/feed/:id'>
+                        <Modal closeHandler={closeItemFeed} title="Детали заказа">       
+                            <OrderDetailPage />
+                        </Modal>
+                    </Route>
+                </Switch>
             )}
             {background && getOrdersSuccess && (
-                <ProtectedRoute exact path='/profile/orders/:id'>
-                    <Modal closeHandler={closeItemProfile} title="Детали заказа">       
-                        <OrderDetailPage />
-                    </Modal>
-                </ProtectedRoute>
+                <Switch location = {location}>
+                    <ProtectedRoute exact path='/profile/orders/:id'>
+                        <Modal closeHandler={closeItemProfile} title="Детали заказа">       
+                            <OrderDetailPage />
+                        </Modal>
+                    </ProtectedRoute>
+                </Switch>
             )}
             
         </>     
