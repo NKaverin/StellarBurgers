@@ -1,159 +1,277 @@
 import { api, checkResponse } from "../../utils/constants";
-export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
-export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
-export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
+import { ItokenAndUser, IUser } from "../../utils/types";
 
-export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
-export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
-export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
+export const REGISTER_USER_REQUEST : 'REGISTER_USER_REQUEST' = 'REGISTER_USER_REQUEST';
+export const REGISTER_USER_SUCCESS : 'REGISTER_USER_SUCCESS' = 'REGISTER_USER_SUCCESS';
+export const REGISTER_USER_FAILED : 'REGISTER_USER_FAILED' = 'REGISTER_USER_FAILED';
 
-export const RESET_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
-export const RESET_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
-export const RESET_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
+export const FORGOT_PASSWORD_REQUEST : 'FORGOT_PASSWORD_REQUEST' = 'FORGOT_PASSWORD_REQUEST';
+export const FORGOT_PASSWORD_SUCCESS : 'FORGOT_PASSWORD_SUCCESS' = 'FORGOT_PASSWORD_SUCCESS';
+export const FORGOT_PASSWORD_FAILED : 'FORGOT_PASSWORD_FAILED' = 'FORGOT_PASSWORD_FAILED';
 
-export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST';
-export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
-export const LOGIN_USER_FAILED = 'LOGIN_USER_FAILED';
+export const RESET_PASSWORD_REQUEST : 'FORGOT_PASSWORD_REQUEST' = 'FORGOT_PASSWORD_REQUEST';
+export const RESET_PASSWORD_SUCCESS : 'FORGOT_PASSWORD_SUCCESS' = 'FORGOT_PASSWORD_SUCCESS';
+export const RESET_PASSWORD_FAILED : 'FORGOT_PASSWORD_FAILED' = 'FORGOT_PASSWORD_FAILED';
 
-export const LOGGED_IN = 'LOGGED_IN';
-export const NOT_LOGGED_IN = 'NOT_LOGGED_IN';
+export const LOGIN_USER_REQUEST : 'LOGIN_USER_REQUEST' = 'LOGIN_USER_REQUEST';
+export const LOGIN_USER_SUCCESS : 'LOGIN_USER_SUCCESS' = 'LOGIN_USER_SUCCESS';
+export const LOGIN_USER_FAILED : 'LOGIN_USER_FAILED' = 'LOGIN_USER_FAILED';
 
-export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST';
-export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
-export const REFRESH_TOKEN_FAILED = 'REFRESH_TOKEN_FAILED';
+export const LOGGED_IN : 'LOGGED_IN' = 'LOGGED_IN';
+export const NOT_LOGGED_IN : 'NOT_LOGGED_IN' = 'NOT_LOGGED_IN';
 
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_FAILED = 'GET_USER_FAILED';
+export const REFRESH_TOKEN_REQUEST : 'REFRESH_TOKEN_REQUEST' = 'REFRESH_TOKEN_REQUEST';
+export const REFRESH_TOKEN_SUCCESS : 'REFRESH_TOKEN_SUCCESS' = 'REFRESH_TOKEN_SUCCESS';
+export const REFRESH_TOKEN_FAILED : 'REFRESH_TOKEN_FAILED' = 'REFRESH_TOKEN_FAILED';
 
-export const PATCH_USER_REQUEST = 'PATCH_USER_REQUEST';
-export const PATCH_USER_SUCCESS = 'PATCH_USER_SUCCESS';
-export const PATCH_USER_FAILED = 'PATCH_USER_FAILED';
+export const GET_USER_REQUEST : 'GET_USER_REQUEST' = 'GET_USER_REQUEST';
+export const GET_USER_SUCCESS : 'GET_USER_SUCCESS' = 'GET_USER_SUCCESS';
+export const GET_USER_FAILED : 'GET_USER_FAILED' = 'GET_USER_FAILED';
 
-export const LOGOUT_USER_REQUEST = 'LOGOUT_USER_REQUEST';
-export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_REQUEST';
-export const LOGOUT_USER_FAILED = 'LOGOUT_USER_REQUEST';
+export const PATCH_USER_REQUEST : 'PATCH_USER_REQUEST' = 'PATCH_USER_REQUEST';
+export const PATCH_USER_SUCCESS : 'PATCH_USER_SUCCESS' = 'PATCH_USER_SUCCESS';
+export const PATCH_USER_FAILED : 'PATCH_USER_FAILED' = 'PATCH_USER_FAILED';
+
+export const LOGOUT_USER_REQUEST : 'LOGOUT_USER_REQUEST' = 'LOGOUT_USER_REQUEST';
+export const LOGOUT_USER_SUCCESS : 'LOGOUT_USER_REQUEST' = 'LOGOUT_USER_REQUEST';
+export const LOGOUT_USER_FAILED : 'LOGOUT_USER_REQUEST' = 'LOGOUT_USER_REQUEST';
 
 // Register user
-export const registerUserRequest = () => ({
+export interface IregisterUserRequest {
+    readonly type: typeof REGISTER_USER_REQUEST;
+}
+
+export interface IregisterUserSuccess {
+    readonly type: typeof REGISTER_USER_SUCCESS;
+    readonly data: ItokenAndUser;
+}
+
+export interface IregisterUserFailed {
+    readonly type: typeof REGISTER_USER_FAILED;
+}
+
+export const registerUserRequest = () : IregisterUserRequest => ({
     type: REGISTER_USER_REQUEST
 });
 
-export const registerUserSuccess = (data) => ({
+export const registerUserSuccess = (data: ItokenAndUser) : IregisterUserSuccess => ({
     type: REGISTER_USER_SUCCESS,
     data: data
 });
 
-export const registerUserFailed = () => ({
+export const registerUserFailed = () : IregisterUserFailed => ({
     type: REGISTER_USER_FAILED
 });
 
 // Forgot password
-export const forgotPasswordRequest = () => ({
+export interface IforgotPasswordRequest {
+    readonly type: typeof FORGOT_PASSWORD_REQUEST;
+}
+
+export interface IforgotPasswordSuccess {
+    readonly type: typeof FORGOT_PASSWORD_SUCCESS;
+    readonly data: IUser;
+}
+
+export interface IforgotPasswordFailed {
+    readonly type: typeof FORGOT_PASSWORD_FAILED;
+}
+
+export const forgotPasswordRequest = () : IforgotPasswordRequest => ({
     type: FORGOT_PASSWORD_REQUEST
 });
 
-export const forgotPasswordSuccess = (data) => ({
+export const forgotPasswordSuccess = (data: IUser) : IforgotPasswordSuccess => ({
     type: FORGOT_PASSWORD_SUCCESS,
     data: data
 });
 
-export const forgotPasswordFailed = () => ({
+export const forgotPasswordFailed = () : IforgotPasswordFailed => ({
     type: FORGOT_PASSWORD_FAILED
 });
 
 // Reset password
-export const resetPasswordRequest = () => ({
+export interface IresetPasswordRequest {
+    readonly type: typeof RESET_PASSWORD_REQUEST;
+}
+
+export interface IresetPasswordSuccess {
+    readonly type: typeof RESET_PASSWORD_SUCCESS;
+    readonly data: IUser;
+}
+
+export interface IresetPasswordFailed {
+    readonly type: typeof RESET_PASSWORD_FAILED;
+}
+
+export const resetPasswordRequest = () : IresetPasswordRequest => ({
     type: RESET_PASSWORD_REQUEST
 });
 
-export const resetPasswordSuccess = (data) => ({
+export const resetPasswordSuccess = (data : IUser) : IresetPasswordSuccess => ({
     type: RESET_PASSWORD_SUCCESS,
     data: data
 });
 
-export const resetPasswordFailed = () => ({
+export const resetPasswordFailed = () : IresetPasswordFailed => ({
     type: RESET_PASSWORD_FAILED
 });
 
 // Login user
-export const loginUserRequest = () => ({
+
+export interface IloginUserRequest {
+    readonly type: typeof LOGIN_USER_REQUEST;
+}
+
+export interface IloginUserSuccess {
+    readonly type: typeof LOGIN_USER_SUCCESS;
+    readonly data: ItokenAndUser;
+}
+
+export interface IloginUserFailed {
+    readonly type: typeof LOGIN_USER_FAILED;
+}
+
+export const loginUserRequest = () : IloginUserRequest => ({
     type: LOGIN_USER_REQUEST
 });
 
-export const loginUserSuccess = (data) => ({
+export const loginUserSuccess = (data : ItokenAndUser) : IloginUserSuccess => ({
     type: LOGIN_USER_SUCCESS,
     data: data
 });
 
-export const loginUserFailed = () => ({
+export const loginUserFailed = () : IloginUserFailed => ({
     type: LOGIN_USER_FAILED
 });
 
 // is logged in
-export const setLoggedIn = () => ({
+export interface IsetLoggedIn {
+    readonly type: typeof LOGGED_IN;
+}
+
+export interface IsetNotLoggedIn {
+    readonly type: typeof NOT_LOGGED_IN;
+}
+
+export const setLoggedIn = () : IsetLoggedIn => ({
     type: LOGGED_IN
 })
 
-export const setNotLoggedIn = () => ({
+export const setNotLoggedIn = () : IsetNotLoggedIn => ({
     type: NOT_LOGGED_IN
 })
 
 // Refresh token
-export const refreshTokenRequest = () => ({
+
+export interface IrefreshTokenRequest {
+    readonly type: typeof REFRESH_TOKEN_REQUEST;
+}
+
+export interface IrefreshTokenSuccess {
+    readonly type: typeof REFRESH_TOKEN_SUCCESS;
+    readonly data: ItokenAndUser;
+}
+
+export interface IrefreshTokenFailed {
+    readonly type: typeof REFRESH_TOKEN_FAILED;
+}
+
+export const refreshTokenRequest = () : IrefreshTokenRequest => ({
     type: REFRESH_TOKEN_REQUEST
 })
 
-export const refreshTokenSuccess = (data) => ({
+export const refreshTokenSuccess = (data : ItokenAndUser) : IrefreshTokenSuccess=> ({
     type: REFRESH_TOKEN_SUCCESS,
     data: data
 })
 
-export const refreshTokenFailed = () => ({
+export const refreshTokenFailed = () : IrefreshTokenFailed => ({
     type: REFRESH_TOKEN_FAILED
 })
 
 // Get user
-export const getUserRequest = () => ({
+export interface IgetUserRequest {
+    readonly type: typeof GET_USER_REQUEST;
+}
+
+export interface IgetUserSuccess {
+    readonly type: typeof GET_USER_SUCCESS;
+    readonly data: ItokenAndUser;
+}
+
+export interface IgetUserFailed {
+    readonly type: typeof GET_USER_FAILED;
+}
+
+export const getUserRequest = () : IgetUserRequest => ({
     type: GET_USER_REQUEST
 });
 
-export const getUserSuccess = (data) => ({
+export const getUserSuccess = (data : ItokenAndUser) : IgetUserSuccess => ({
     type: GET_USER_SUCCESS,
     data: data
 });
 
-export const getUserFailed = () => ({
+export const getUserFailed = () : IgetUserFailed => ({
     type: GET_USER_FAILED
 });
 
 // patch
-export const patchUserRequest = () => ({
+export interface IpatchUserRequest {
+    readonly type: typeof PATCH_USER_REQUEST;
+}
+
+export interface IpatchUserSuccess {
+    readonly type: typeof PATCH_USER_SUCCESS;
+    readonly data: ItokenAndUser;
+}
+
+export interface IpatchUserFailed {
+    readonly type: typeof PATCH_USER_FAILED;
+}
+
+export const patchUserRequest = () : IpatchUserRequest => ({
     type:  PATCH_USER_REQUEST
 });
 
-export const patchUserSuccess = (data) => ({
+export const patchUserSuccess = (data : ItokenAndUser) : IpatchUserSuccess => ({
     type:  PATCH_USER_SUCCESS,
     data: data
 });
 
-export const patchUserFailed = () => ({
+export const patchUserFailed = () : IpatchUserFailed => ({
     type:  PATCH_USER_FAILED
 });
 
 // logout
-export const logoutUserRequest = () => ({
+export interface IlogoutUserRequest {
+    readonly type: typeof LOGOUT_USER_REQUEST;
+}
+
+export interface IlogoutUserSuccess {
+    readonly type: typeof LOGOUT_USER_SUCCESS;
+}
+
+export interface IlogoutUserFailed {
+    readonly type: typeof LOGOUT_USER_FAILED;
+}
+
+export const logoutUserRequest = () : IlogoutUserRequest => ({
     type:  LOGOUT_USER_REQUEST
 });
 
-export const logoutUserSuccess = (data) => ({
-    type:  LOGOUT_USER_SUCCESS,
-    data: data
+export const logoutUserSuccess = () : IlogoutUserSuccess => ({
+    type:  LOGOUT_USER_SUCCESS
 });
 
-export const logoutUserFailed = () => ({
+export const logoutUserFailed = () : IlogoutUserFailed => ({
     type:  LOGOUT_USER_FAILED
 });
+
+export type TUser = IregisterUserRequest | IregisterUserSuccess | IregisterUserFailed | IforgotPasswordRequest | IforgotPasswordSuccess | IforgotPasswordFailed | IresetPasswordRequest | IresetPasswordSuccess 
+| IresetPasswordFailed | IloginUserRequest | IloginUserSuccess | IloginUserFailed | IsetLoggedIn | IsetNotLoggedIn | IrefreshTokenRequest | IrefreshTokenSuccess | IrefreshTokenFailed | IgetUserRequest
+| IgetUserSuccess | IgetUserFailed | IpatchUserRequest | IpatchUserSuccess | IpatchUserFailed | IlogoutUserRequest | IlogoutUserSuccess | IlogoutUserFailed;
 
 export function registerUser(name, email, password) {
     return async (dispatch) => {
@@ -447,7 +565,7 @@ export function logoutUser() {
                 .then(res => {
                     deleteCookie('token');
                     deleteCookie('refreshToken');
-                    dispatch(logoutUserSuccess(res));
+                    dispatch(logoutUserSuccess());
                     dispatch(setNotLoggedIn());
                     return res;
                 })

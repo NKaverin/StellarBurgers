@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import styles from './pages.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from "../services/redusers/rootReduser";
+import { useSelector, useDispatch } from '../services/hooks';
 import { wsConnectionStart, wsConnectionClosed } from '../services/actions/ws';
 import { useParams, useLocation }from 'react-router-dom';
 import { fotmatDate, getStatusText } from '../utils/constants';
@@ -11,13 +10,13 @@ import { getCookie } from '../services/actions/user';
 const OrderDetailPage = () => { 
     const dispatch = useDispatch();  
     const { id } = useParams();
-    const orders = useSelector((state:RootState) => state.ws.orders);
-    const getOrdersSuccess = useSelector((state:RootState) => state.ws.getOrdersSuccess);
+    const orders = useSelector((state) => state.ws.orders);
+    const getOrdersSuccess = useSelector((state) => state.ws.getOrdersSuccess);
     const order = orders.find((element) => element._id === id);
-    const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
+    const wsConnected = useSelector((state) => state.ws.wsConnected);
     const location = useLocation();
     const background = location.state && location.state.background;
-    const ingredients = useSelector((state:RootState) => state.ingredients.items) || [];
+    const ingredients = useSelector((state) => state.ingredients.items) || [];
     const activeProfile = (location.pathname.indexOf('/profile') === 0);  
 
     const sumOrderPrice = (ingredientsInOrder) => {    

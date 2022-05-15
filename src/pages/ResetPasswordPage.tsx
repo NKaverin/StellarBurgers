@@ -11,10 +11,10 @@ const ResetPasswordPage = () => {
     const dispatch = useDispatch();
     const passwordRef = useRef<HTMLInputElement>(null);
     const codeRef = useRef<HTMLInputElement>(null);
-    const [password, setPassword] = useState('');
-    const [code, setCode] = useState('');
-    const [validationError, setValidationError] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    const [password, setPassword] = useState<string>('');
+    const [code, setCode] = useState<string>('');
+    const [validationError, setValidationError] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const onChangePassword = (e) => {
         setPassword(e.target.value);
@@ -49,7 +49,7 @@ const ResetPasswordPage = () => {
                         name={'password'}
                         error={validationError}
                         ref={passwordRef}
-                        onIconClick={e => {setShowPassword(!showPassword)}}
+                        onIconClick={() => {setShowPassword(!showPassword)}}
                         errorText={'Пароль должен быть не менее шести символов.'}
                         size={'default'}
                     />
