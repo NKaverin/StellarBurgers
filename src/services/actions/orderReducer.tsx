@@ -1,4 +1,5 @@
 import { api, checkResponse } from "../../utils/constants";
+import { getCookie } from "./user";
 
 export const ADD_TO_ORDER = 'ADD_TO_ORDER';
 export const REMOVE_FROM_ORDER = 'REMOVE_FROM_ORDER';
@@ -58,7 +59,8 @@ export function postOrder(dataForOrder) {
     return async (dispatch) => {
         const options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + getCookie('token') },
             body: JSON.stringify({ "ingredients": dataForOrder })
         }  
         try {

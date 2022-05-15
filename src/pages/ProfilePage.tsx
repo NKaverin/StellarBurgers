@@ -1,11 +1,11 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useRef, useState } from "react";
 import styles from './pages.module.css';
-import { getUser, logoutUser, patchUser } from "../services/actions/user";
+import { logoutUser, patchUser } from "../services/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../services/redusers/rootReduser";
 import { useHistory, useLocation } from 'react-router-dom';
-
+import OrdersFeed from "../components/OrdersFeed/OrdersFeed";
 
 const ProfilePage = () => {
     const dispatch = useDispatch();   
@@ -27,7 +27,7 @@ const ProfilePage = () => {
     const user = useSelector((state:RootState) => state.user.user);
 
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('') ; 
+    const [email, setEmail] = useState('');
 
     const onChangeName = (e) => {
         setName(e.target.value);
@@ -59,7 +59,7 @@ const ProfilePage = () => {
         setIsChenged(true);
     }
 
-    const submitHandler = async (e) => { 
+    const submitHandler = async (e) => {
         e.preventDefault();
         await dispatch(patchUser(name, email, password));
     };
@@ -75,13 +75,12 @@ const ProfilePage = () => {
 
     
     const activeProfile = (location.pathname === '/profile');
-    const activeOrders = (location.pathname === '/profile/orders');     
+    const activeOrders = (location.pathname === '/profile/orders');
 
-    const logout = async () => {  
+    const logout = async () => {
         await dispatch(logoutUser());
         history.replace({ pathname: '/login'}); 
     };
-
 
     useEffect(() => {
         if (user) {
@@ -91,8 +90,9 @@ const ProfilePage = () => {
     }, [user]);
 
 
+    
     return (
-        <div className={styles.profileWrapper}>
+        <div className={styles.horizontalWrapper}>
             <div className={styles.sideMenu__wrapper + ' mr-15 pl-5'}>
                 <ul className={styles.sideMenu__list}>
                     <li>
@@ -115,7 +115,7 @@ const ProfilePage = () => {
                     В этом разделе вы можете изменить свои персональные данные
                 </p>
             </div>
-            <div>
+            {activeProfile &&(<div>
                 <form className={styles.container} onSubmit={submitHandler}>
                     <div className={styles.item +" mb-6"}>
                         <Input
@@ -164,7 +164,10 @@ const ProfilePage = () => {
                     </div>)}
                 </form>
                 
-            </div>
+            </div>)}
+
+            {activeOrders && (<OrdersFeed />)}
+            
         </div>
     )
 }

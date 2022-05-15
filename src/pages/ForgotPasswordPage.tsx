@@ -2,8 +2,7 @@ import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-component
 import { useRef, useState } from "react";
 import styles from './pages.module.css';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../services/redusers/rootReduser";
+import { useDispatch } from "react-redux";
 import { forgotPassword } from "../services/actions/user";
 
 const ForgotPasswordPage = () => {
@@ -12,7 +11,7 @@ const ForgotPasswordPage = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const [email, setEmail] = useState('');
     const [validationError, setValidationError] = useState(false);
-    //const forgotPasswordSuccess = useSelector((state: RootState) => state.password)
+
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
         setValidationError(!e.target.validity.valid);

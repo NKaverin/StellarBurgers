@@ -261,7 +261,7 @@ export function loginUser(email, password) {
                 // устанавливаем токен
                 const authToken = res.accessToken.split('Bearer ')[1];
                 if (authToken) {
-                    setCookie('token', authToken, { expires: 30 });
+                    setCookie('token', authToken, {});
                 }
                 setCookie('refreshToken', res.refreshToken, {});
                 return res;
