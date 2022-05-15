@@ -1,10 +1,9 @@
 import styles from './OrderDetails.module.css';
 import successImg from '../../images/graphics.svg'
-import { useSelector } from 'react-redux';
-import { RootState } from '../../services/redusers/rootReduser';
+import { useSelector } from '../../services/hooks';
 
 const OrderDetails = () => {
-    const orderId = useSelector((state:RootState) => state.order.orderId);
+    const orderId = useSelector((state) => state.order.orderId);
     return (
         <div className={styles.orderDetails}>
             <p className="text text_type_digits-large">{orderId}</p>

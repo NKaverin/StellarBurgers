@@ -9,8 +9,8 @@ const ForgotPasswordPage = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const emailRef = useRef<HTMLInputElement>(null);
-    const [email, setEmail] = useState('');
-    const [validationError, setValidationError] = useState(false);
+    const [email, setEmail] = useState<string>('');
+    const [validationError, setValidationError] = useState<boolean>(false);
 
     const onChangeEmail = (e) => {
         setEmail(e.target.value);

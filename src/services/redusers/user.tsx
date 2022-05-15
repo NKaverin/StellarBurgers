@@ -1,3 +1,4 @@
+import { IUser } from '../../utils/types';
 import {
     REGISTER_USER_REQUEST,
     REGISTER_USER_SUCCESS,
@@ -21,16 +22,13 @@ import {
     PATCH_USER_FAILED,
     LOGOUT_USER_FAILED,
     LOGOUT_USER_SUCCESS,
-    LOGOUT_USER_REQUEST
+    LOGOUT_USER_REQUEST,
+    TUser
 } from '../actions/user';
 
-interface userInterface {
-    email: string,
-    name: string
-}
 
-interface iinitialState { 
-    user: userInterface,
+interface IInitialState { 
+    user: IUser,
     registerRequest: boolean,
     registerFailed: boolean,
     forgotPasswordRequest: boolean,
@@ -47,10 +45,13 @@ interface iinitialState {
     patchFailed: boolean,
     logoutRequest: boolean,
     logoutFailed: boolean,
-    logoutSuccess: boolean
+    logoutSuccess: boolean,
+    getUserSuccess: boolean,
+    changeRequest: boolean,
+    changeFailed: boolean
 }
 
-const initialState:iinitialState = {
+const initialState : IInitialState = {
     user: {
         'name': '',
         'email': ''
@@ -71,10 +72,13 @@ const initialState:iinitialState = {
     patchFailed: false,
     logoutRequest: false,
     logoutFailed: false,
-    logoutSuccess: false
+    logoutSuccess: false,
+    getUserSuccess: false,
+    changeRequest: false,
+    changeFailed: false
 }
-
-export const userReducer = (state = initialState, action) => {
+//: TUser
+export const userReducer = (state : IInitialState = initialState, action : TUser ) : IInitialState => {
     switch (action.type) {
 
         case REGISTER_USER_REQUEST: {
@@ -97,7 +101,7 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 registerFailed: true, 
                 registerRequest: false,
-                user: null
+                user: {name: "", email: ""}
             }
         }
 
@@ -207,7 +211,7 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 getFailed: true,
                 getRequest: false,
-                user: null
+                user: {name: "", email: ""}
             }
         }
 

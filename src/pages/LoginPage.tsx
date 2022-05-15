@@ -2,19 +2,18 @@ import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-component
 import { useRef, useState } from "react";
 import styles from './pages.module.css';
 import { useHistory, Redirect, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from '../services/hooks';
 import { loginUser } from "../services/actions/user";
-import { RootState } from "../services/redusers/rootReduser";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
     const passwordRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
     const history = useHistory();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const loggedIn = useSelector((state:RootState) => state.user.loggedIn); 
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const loggedIn = useSelector((state) => state.user.loggedIn); 
     const { state } = useLocation();
 
     const onChangeEmail = (e) => {

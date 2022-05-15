@@ -1,7 +1,7 @@
 import styles from './IngredientDetails.module.css';
-import propTypesOfDataElement from '../../utils/propTypesOfDataElement';
+import { TElement } from '../../utils/types';
 
-const IngredientDetails = ({ item }) => {
+const IngredientDetails = ({ item } : IIngredientDetails) => {
     return (
         <div className={styles.ingredientDetails}>
             <img src={item.image_large} alt={item.name} />
@@ -28,8 +28,8 @@ const IngredientDetails = ({ item }) => {
     )
 }
 
-IngredientDetails.propTypes = {  
-    item: propTypesOfDataElement.isRequired
+interface IIngredientDetails {  
+    item: TElement
 }
 
 export default IngredientDetails;

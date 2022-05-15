@@ -1,16 +1,14 @@
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useEffect, useRef, useState } from 'react';
 import styles from './BurgerIngredients.module.css';
-import PropTypes from 'prop-types';
-import propTypesOfDataElement from '../../utils/propTypesOfDataElement';
-import { useSelector } from "react-redux";
-import { RootState } from '../../services/redusers/rootReduser';
+import { TElement } from '../../utils/types';
+import { useSelector } from '../../services/hooks';
 import { useDrag } from 'react-dnd';
 
-const  BurgerIngredients = ({ openHandler }) => {
-    const data = useSelector((state:RootState) => state.ingredients.items);
-    const [current, setCurrent] = useState("buns");
-    const orderData = useSelector((state:RootState) => state.order.ingredients);
+const  BurgerIngredients = ({ openHandler } : IBurgerIngredients) => {
+    const data = useSelector((state) => state.ingredients.items);
+    const [current, setCurrent] = useState<string>("buns");
+    const orderData = useSelector((state) => state.order.ingredients);
     // скрол к группе
     const buns = useRef(null);
     const suses = useRef(null);
@@ -86,51 +84,52 @@ const  BurgerIngredients = ({ openHandler }) => {
 };
 
 
-const Ingredients = ({ data, type, openHandler, orderData }) => {
+const Ingredients = ({ data, type, openHandler, orderData } : IIngredients) => {
     return (
         <ul className={styles.burgerIngredients__ingridients + " pl-1 pr-1 pt-6 pb-2"}>
             {data.filter(element => element.type === type).map(element => {
-                return <Element {...element} key = {element._id} openHandler = {openHandler} counter = {orderData.filter(orderElement => element._id === orderElement._id).length}/>
+                return <Element element = {element} key = {element._id} openHandler = {openHandler} counter = {orderData.filter(orderElement => element._id === orderElement._id).length}/>
             })}
         </ul>
     )
 }
 
-const Element = (props) => {
+const Element = ({openHandler, element, counter} : IElement) => {
     const [, dragRef] = useDrag({
         type: 'ingredient',  
-        item: props,
+        item: element,
     });
 
     return (
-        <div className={styles.burgerIngredients__element + " mb-8 pl-3 pr-3"} key = {props._id} onClick={() => props.openHandler(props)} ref={dragRef}>
-            {props.counter !== 0 && (<div className={styles.burgerIngredients__counter}>
-                <Counter count={props.counter} size="default" />
+        <div className={styles.burgerIngredients__element + " mb-8 pl-3 pr-3"} key = {element._id} onClick={() => openHandler(element)} ref={dragRef}>
+            {counter !== 0 && (<div className={styles.burgerIngredients__counter}>
+                <Counter count={counter} size="default" />
             </div>)}
-            <img src={props.image} alt={props.name} className="burgerIngredients__picture" />
+            <img src={element.image} alt={element.name} className="burgerIngredients__picture" />
             <div className={styles.burgerIngredients__priceBox + " mt-1 mb-1"}>
-                <p className={styles.burgerIngredients__price + " text text_type_digits-default"}>{props.price}</p>
+                <p className={styles.burgerIngredients__price + " text text_type_digits-default"}>{element.price}</p>
                 <CurrencyIcon type="primary" />
             </div>
-            <p className={styles.burgerIngredients__caption +  " text text_type_main-default"}>{props.name}</p>
+            <p className={styles.burgerIngredients__caption +  " text text_type_main-default"}>{element.name}</p>
         </div>
     )
 }
 
-BurgerIngredients.propTypes = {
-    openHandler: PropTypes.func.isRequired,
-    element: propTypesOfDataElement
+interface IBurgerIngredients {
+    openHandler: (TElement) => void
 }
 
-Element.propTypes = {
-    openHandler: PropTypes.func.isRequired,
-    element: propTypesOfDataElement,
-    counter: PropTypes.number
+interface IElement {
+    openHandler: (TElement) => void,
+    element: TElement,
+    counter: number
 }
 
-Ingredients.propTypes = {
-    openHandler: PropTypes.func.isRequired,
-    type: PropTypes.string.isRequired
+interface IIngredients {
+    openHandler: (TElement) => void,
+    type: string,
+    data: TElement[],
+    orderData: TElement[]
 }
 
 export default BurgerIngredients;

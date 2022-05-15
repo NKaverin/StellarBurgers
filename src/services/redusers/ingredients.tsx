@@ -1,11 +1,17 @@
-import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS, GET_INGREDIENTS_FAILED } from '../actions/ingredients';
+import { TElement } from '../../utils/types';
+import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS, GET_INGREDIENTS_FAILED, TIngredients } from '../actions/ingredients';
 
-const initialState = {
+interface IInitialState {
+    loading: boolean,
+    items: TElement[]
+}
+
+const initialState : IInitialState = {
     loading: false,
     items: []
 };
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (state : IInitialState = initialState, action : TIngredients) => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {
