@@ -273,8 +273,8 @@ export type TUser = IregisterUserRequest | IregisterUserSuccess | IregisterUserF
 | IresetPasswordFailed | IloginUserRequest | IloginUserSuccess | IloginUserFailed | IsetLoggedIn | IsetNotLoggedIn | IrefreshTokenRequest | IrefreshTokenSuccess | IrefreshTokenFailed | IgetUserRequest
 | IgetUserSuccess | IgetUserFailed | IpatchUserRequest | IpatchUserSuccess | IpatchUserFailed | IlogoutUserRequest | IlogoutUserSuccess | IlogoutUserFailed;
 
-export function registerUser(name, email, password) {
-    return async (dispatch) => {
+export function registerUser(name : string, email : string, password : string) {
+    return async (dispatch : AppThunk) => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -303,8 +303,8 @@ export function registerUser(name, email, password) {
     };
 }
 
-export function forgotPassword(email) {
-    return async (dispatch) => {
+export function forgotPassword(email : string) {
+    return async (dispatch : AppThunk) => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -322,15 +322,15 @@ export function forgotPassword(email) {
                 return res;
             });
         }
-        catch(error: any) {
+        catch(error: unknown) {
             dispatch(forgotPasswordFailed());
             console.log(error);
         }
     };
 }
 
-export function resetPassword(password, code) {
-    return async (dispatch) => {
+export function resetPassword(password : string, code : string) {
+    return async (dispatch : AppThunk) => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -349,15 +349,15 @@ export function resetPassword(password, code) {
                 return res;
             });
         }
-        catch(error: any) {
+        catch(error: unknown) {
             dispatch(resetPasswordFailed());
             console.log(error);
         }
     };
 }
 
-export function loginUser(email, password) {
-    return async (dispatch) => {
+export function loginUser(email : string, password : string) {
+    return async (dispatch : AppThunk) => {
         const requestOptions = {
             method: 'POST',
             headers: { 
@@ -385,25 +385,25 @@ export function loginUser(email, password) {
                 return res;
             });
         }
-        catch(error: any) {
+        catch(error: unknown) {
             dispatch(loginUserFailed());
             console.log(error);
         }
     };
 }
 
-export function deleteCookie(name) {
+export function deleteCookie(name : string) {
     setCookie(name, null, { expires: -1 });
 } 
 
-export function getCookie(name) {
+export function getCookie(name : string) {
     const matches = document.cookie.match(
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name, value, props) {
+export function setCookie(name : string, value : string, props : {expires : number}) {
     props = props || {};
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {
@@ -428,7 +428,7 @@ export function setCookie(name, value, props) {
 } 
 
 export function refreshToken() {
-    return async (dispatch) => {
+    return async (dispatch : AppThunk) => {
         const refresh= getCookie('refreshToken');
         const requestOptions = {
             method: 'POST',
@@ -452,7 +452,7 @@ export function refreshToken() {
                 return res;
             });
         }
-        catch(error: any) { 
+        catch(error: unknown) { 
             dispatch(refreshTokenFailed());
             console.log(error);
         }
@@ -468,7 +468,7 @@ export function getUser() {
         return async () => {}
     } 
 
-    return async (dispatch) => {
+    return async (dispatch : AppThunk) => {
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -497,14 +497,14 @@ export function getUser() {
                 } 
             });
         }
-        catch(error:any) {
+        catch(error:unknown) {
             dispatch(getUserFailed());
             console.log(error);
         }
     };
 }
 
-export function patchUser(name, email, password) {
+export function patchUser(name : string, email : string, password : string) {
     const token = getCookie('token');
     const refresh = getCookie('refreshToken');
 
@@ -512,7 +512,7 @@ export function patchUser(name, email, password) {
     if (!token && !refresh) {
         return async () => {}
     } 
-    return async (dispatch) => {
+    return async (dispatch : AppThunk) => {
         const requestOptions = {
             method: 'PATCH',
             headers: {
@@ -549,7 +549,7 @@ export function patchUser(name, email, password) {
 }
 
 export function logoutUser() {
-    return async (dispatch) => {
+    return async (dispatch : AppThunk) => {
         const refreshToken = getCookie('refreshToken')
         const requestOptions = {
             method: 'POST',
@@ -570,7 +570,7 @@ export function logoutUser() {
                     return res;
                 })
         }
-        catch(error: any) {
+        catch(error: unknown) {
             dispatch(logoutUserFailed());
             console.log(error);
         }

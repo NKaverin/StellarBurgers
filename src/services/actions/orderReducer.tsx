@@ -92,8 +92,8 @@ export function reorderItems(dragIndex : number, hoverIndex : number) : Ireorder
     }
 }
 
-export function postOrder(dataForOrder) {
-    return async (dispatch) => {
+export function postOrder(dataForOrder : string[]) {
+    return async (dispatch : AppThunk) => {
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export function postOrder(dataForOrder) {
                 dispatch(postOrderSuccess(json.order.number));                      
             })        
         }    
-        catch(error: any) {
+        catch(error: unknown) {
             dispatch(postOrderFailed());
         }
     };

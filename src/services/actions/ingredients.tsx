@@ -40,7 +40,7 @@ function getIngredientsFailed() : IgetIngredientsFailed{
 }
 
 
-export function getIngredients(dispatch) {  
+export function getIngredients(dispatch : AppThunk) {  
     try {
         dispatch(getIngredientsRequest());
         return fetch(api + 'ingredients')
@@ -49,7 +49,7 @@ export function getIngredients(dispatch) {
             dispatch(getIngredientsSuccess(json.data));                      
         })        
     }    
-    catch(error: any) {
+    catch(error: unknown) {
         dispatch(getIngredientsFailed());
     }
 }
