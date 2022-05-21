@@ -12,7 +12,7 @@ interface IBurgerConstructor {
 } 
 
 const BurgerConstructor = ({ openHandler } : IBurgerConstructor) => {
-    function onClickDeleteElement(element) {
+    function onClickDeleteElement(element : TElement) {
         dispatch(removeFromOrder(element))
         setElementIndex(elementIndex - 1); 
     }
@@ -87,9 +87,7 @@ const BurgerConstructor = ({ openHandler } : IBurgerConstructor) => {
                 <p className="text text_type_digits-medium mr-2">{order.totalPrice}</p>
                 <CurrencyIcon type="primary" />
                 <div className="ml-10" onClick={stockBun && openHandler}>
-                    <Button type="primary" size="medium">
-                        Оформить заказ
-                    </Button>   
+                    <Button type="primary" size="medium" name='Оформить заказ'/> Оформить заказ
                 </div>
         
             </div>

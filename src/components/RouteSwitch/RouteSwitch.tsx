@@ -15,9 +15,13 @@ import { getIngredients } from "../../services/actions/ingredients";
 import Modal from "../Modal/Modal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
+interface LocationState {  
+    background: any
+}
+
 const RouteSwitch = () => {
     const dispatch = useDispatch();
-    const location = useLocation();
+    const location = useLocation<LocationState>();
     const history = useHistory();
     const background = location.state && location.state.background;
     const loggedIn = useSelector((state) => state.user.loggedIn);                   

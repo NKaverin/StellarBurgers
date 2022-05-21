@@ -4,7 +4,7 @@ import styles from './pages.module.css'
 import IngredientDetails from '../components/IngredientDetails/IngredientDetails'
 
 const IngredientIDPage = () => {
-    const { id } = useParams();  
+    const { id } = useParams<{id?: string}>();  
     const items = useSelector((state) => state.ingredients.items);
     const item = items.find((element) => element._id === id);  
 

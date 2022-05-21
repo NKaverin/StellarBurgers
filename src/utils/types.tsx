@@ -12,7 +12,8 @@ type TElement = {
     image_large: string,
     __v: number,
     elementIndex: number,
-    uud: string
+    uud: string,
+    count: number
 }
 
 type IValidationError  = {

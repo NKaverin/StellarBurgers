@@ -1,5 +1,5 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from "react";
 import styles from './pages.module.css';
 import { logoutUser, patchUser } from "../services/actions/user";
 import { useSelector, useDispatch } from '../services/hooks';
@@ -30,7 +30,7 @@ const ProfilePage = () => {
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
 
-    const onChangeName = (e) => {
+    const onChangeName = (e : ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
         setValidationError({
             ...validationError,
@@ -40,7 +40,7 @@ const ProfilePage = () => {
         setIsChenged(true);
     }
 
-    const onChangeEmail = (e) => {
+    const onChangeEmail = (e : ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
         setValidationError({
             ...validationError,
@@ -50,7 +50,7 @@ const ProfilePage = () => {
         setIsChenged(true);
     }
 
-    const onChangePassword = (e) => {
+    const onChangePassword = (e : ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
         setValidationError({
             ...validationError,
@@ -60,9 +60,9 @@ const ProfilePage = () => {
         setIsChenged(true);
     }
 
-    const submitHandler = async (e) => {
+    const submitHandler = async (e : SyntheticEvent) => {
         e.preventDefault();
-        await dispatch(patchUser(name, email, password));
+        dispatch(patchUser(name, email, password));
     };
 
     const cancelHandler = () => {
@@ -160,8 +160,8 @@ const ProfilePage = () => {
                         />
                     </div>
                     {isChanged && (<div className={styles.buttons + ' mt-10'}>
-                        <Button type="primary" size="medium" disabled={!validationForm && !isChanged}>Сохранить</Button>
-                        <Button type="primary" size="medium" onClick={cancelHandler}>Отмена</Button>
+                        <Button type="primary" size="medium" disabled={!validationForm && !isChanged} name ='Сохранить'/>
+                        <Button type="primary" size="medium" onClick={cancelHandler} name ='Отмена'/>
                     </div>)}
                 </form>
                 

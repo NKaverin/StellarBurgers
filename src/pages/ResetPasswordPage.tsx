@@ -1,7 +1,7 @@
 import styles from './pages.module.css';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useRef, useState } from 'react';
+import { ChangeEvent, SyntheticEvent, useRef, useState } from 'react';
 import { useDispatch } from '../services/hooks';
 import { resetPassword } from '../services/actions/user';
 
@@ -16,16 +16,16 @@ const ResetPasswordPage = () => {
     const [validationError, setValidationError] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    const onChangePassword = (e) => {
+    const onChangePassword = (e : ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
         setValidationError(e.target.value.length < 6);
     }
 
-    const onChangeCode = (e) => {
+    const onChangeCode = (e : ChangeEvent<HTMLInputElement>) => {
         setCode(e.target.value);
     }
 
-    const submitHandler = async (e) => { 
+    const submitHandler = async (e : SyntheticEvent) => { 
         e.preventDefault();
         await dispatch(resetPassword(password, code));
         if (!localStorage.getItem('forgotPasswordSuccess')) { 
@@ -66,12 +66,10 @@ const ResetPasswordPage = () => {
                         size={'default'}                      
                     />
                 </div>
-                <Button type="primary" size="medium" disabled={validationError}>
-                    Сохранить
-                </Button>
+                <Button type="primary" size="medium" disabled={validationError} name = 'Сохранить'/>
                 <p className={styles.mainText + ' text text_type_main-default text_color_inactive mt-20'}>
                     Вспомнили пароль?
-                    <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })}>Войти</Button>
+                    <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })} name = 'Войти'/>
                 </p>  
             </form>
         </div> 

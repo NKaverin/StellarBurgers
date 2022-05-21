@@ -6,6 +6,7 @@ import { fotmatDate, getStatusText } from '../../utils/constants';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { wsConnectionClosed, wsConnectionStart } from '../../services/actions/ws';
 import { getCookie } from '../../services/actions/user';
+import { TElement } from '../../utils/types';
 
 
 const OrdersFeed = () => {
@@ -20,7 +21,7 @@ const OrdersFeed = () => {
     const activeProfile = (location.pathname.indexOf('/profile') === 0);  
     const ingredients = useSelector((state) => state.ingredients.items);
 
-    const onClick = (order_id) => {
+    const onClick = (order_id : string) => {
         if (activeProfile) {
             history.replace({pathname: 'orders/' + order_id, state: { background: location } });
         }  else {
@@ -28,11 +29,11 @@ const OrdersFeed = () => {
         }
     }
 
-    const sumOrderPrice = (ingredientsInOrder) => {    
-        return ingredientsInOrder.reduce((total, element) => { return total + ingredients.filter((e) => element === e._id)[0].price}, 0);
+    const sumOrderPrice = (ingredientsInOrder : Array<string>) => {    
+        return ingredientsInOrder.reduce((total : number, element : string) => { return total + ingredients.filter((e) => element === e._id)[0].price}, 0);
     }
 
-    const getStatusColorClass = (status) => {
+    const getStatusColorClass = (status : string) => {
         if (status === 'done' || status === 'created') {
             return '';
         }
@@ -54,9 +55,9 @@ const OrdersFeed = () => {
 
     const init = async () => {
         if (activeProfile) {
-            await dispatch(wsConnectionStart(`?token=${getCookie('token')}`));
+            dispatch(wsConnectionStart(`?token=${getCookie('token')}`));
         }  else {
-            await dispatch(wsConnectionStart('/all'));
+            dispatch(wsConnectionStart('/all'));
         }       
     };
 

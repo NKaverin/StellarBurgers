@@ -13,6 +13,7 @@ import BurgerConstructor from '../components/BurgerConstructor/BurgerConstructor
 import Modal from '../components/Modal/Modal';
 import IngredientDetails from '../components/IngredientDetails/IngredientDetails';
 import OrderDetails from '../components/OrderDetails/OrderDetails';
+import { TElement } from '../utils/types';
 
 function HomePage() {
     const dispatch = useDispatch();
@@ -25,7 +26,7 @@ function HomePage() {
     const data = useSelector((state) => state.order.ingredients);
 
     {/* открытие и закрытие  деталей ингредиента */}
-    const openItem = (item) => {
+    const openItem = (item : TElement) => {
         history.replace({ pathname: '/ingredients/' + item._id, state: { background: {...location, pathname: '/ingredients/' + item._id}}} );
         dispatch(showIngredientDetails(item));       
     }  
