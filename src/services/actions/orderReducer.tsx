@@ -93,8 +93,8 @@ export function reorderItems(dragIndex : number, hoverIndex : number) : Ireorder
     }
 }
 
-export function postOrder(dataForOrder : string[]) {
-    return async (dispatch : AppThunk) => {
+export const postOrder: AppThunk = (dataForOrder : string[]) =>  {
+    return async (dispatch : AppDispatch) => {
 
         const options = {
             method: 'POST',

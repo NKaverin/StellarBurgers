@@ -274,7 +274,7 @@ export type TUser = IregisterUserRequest | IregisterUserSuccess | IregisterUserF
 | IresetPasswordFailed | IloginUserRequest | IloginUserSuccess | IloginUserFailed | IsetLoggedIn | IsetNotLoggedIn | IrefreshTokenRequest | IrefreshTokenSuccess | IrefreshTokenFailed | IgetUserRequest
 | IgetUserSuccess | IgetUserFailed | IpatchUserRequest | IpatchUserSuccess | IpatchUserFailed | IlogoutUserRequest | IlogoutUserSuccess | IlogoutUserFailed;
 
-export function registerUser(name : string, email : string, password : string) : ((dispatch: AppThunk) => void) {
+export const registerUser : AppThunk = (name : string, email : string, password : string) => {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -304,7 +304,7 @@ export function registerUser(name : string, email : string, password : string) :
     };
 }
 
-export function forgotPassword(email : string) : ((dispatch: AppThunk) => void) {
+export const forgotPassword : AppThunk =  (email : string) => {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -330,7 +330,7 @@ export function forgotPassword(email : string) : ((dispatch: AppThunk) => void) 
     };
 }
 
-export function resetPassword(password : string, code : string) : ((dispatch: AppThunk) => void) {
+export const resetPassword : AppThunk = (password : string, code : string) => {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -357,7 +357,7 @@ export function resetPassword(password : string, code : string) : ((dispatch: Ap
     };
 }
 
-export function loginUser(email : string, password : string) : ((dispatch: AppThunk) => void) {
+export const loginUser : AppThunk = (email : string, password : string) => {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -432,7 +432,7 @@ export function setCookie(name : string, value : string | boolean, props : {[nam
 
 
 
-export function getUser() : ((dispatch: any) => void) {
+export const getUser : AppThunk = () : ((dispatch: any) => void) => {
     const token = getCookie('token');
     const refresh = getCookie('refreshToken');
 
@@ -477,7 +477,7 @@ export function getUser() : ((dispatch: any) => void) {
     };
 }
 
-export function refreshToken() : ((dispatch: AppThunk) => any) {
+export const refreshToken : AppThunk = () : ((dispatch : AppDispatch) => any) => {
     return async (dispatch) => {
         const refresh= getCookie('refreshToken');
         const requestOptions = {
@@ -509,7 +509,7 @@ export function refreshToken() : ((dispatch: AppThunk) => any) {
     }  
 }
 
-export function patchUser(name : string, email : string, password : string) : ((dispatch: any) => void) {
+export const patchUser : AppThunk = (name : string, email : string, password : string) => {
     const token = getCookie('token');
     const refresh = getCookie('refreshToken');
 
@@ -517,7 +517,7 @@ export function patchUser(name : string, email : string, password : string) : ((
     if (!token && !refresh) {
         return async () => {}
     } 
-    return async (dispatch) => {
+    return async (dispatch : any) => {
         const requestOptions = {
             method: 'PATCH',
             headers: {
@@ -553,8 +553,8 @@ export function patchUser(name : string, email : string, password : string) : ((
     };
 }
 
-export function logoutUser() {
-    return async (dispatch : AppThunk) => {
+export const logoutUser : AppThunk = () => {
+    return async (dispatch : AppDispatch) => {
         const refreshToken = getCookie('refreshToken')
         const requestOptions = {
             method: 'POST',
