@@ -1,6 +1,6 @@
 import { api, checkResponse } from "../../utils/constants";
 import { TElement } from "../../utils/types";
-import { AppDispatch } from "../store";
+import { AppDispatch, AppThunk } from "../store";
 import { getCookie } from "./user";
 
 export const ADD_TO_ORDER : 'ADD_TO_ORDER' = 'ADD_TO_ORDER';
@@ -94,7 +94,8 @@ export function reorderItems(dragIndex : number, hoverIndex : number) : Ireorder
 }
 
 export function postOrder(dataForOrder : string[]) {
-    return async (dispatch : AppDispatch) => {
+    return async (dispatch : AppThunk) => {
+
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json',
@@ -109,7 +110,7 @@ export function postOrder(dataForOrder : string[]) {
                 dispatch(postOrderSuccess(json.order.number));                      
             })        
         }    
-        catch(error: any) {
+        catch(error: unknown) {
             dispatch(postOrderFailed());
         }
     };

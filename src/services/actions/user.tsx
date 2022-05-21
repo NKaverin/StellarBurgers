@@ -1,6 +1,6 @@
 import { api, checkResponse } from "../../utils/constants";
 import { ItokenAndUser, IUser } from "../../utils/types";
-import { AppDispatch } from "../store";
+import { AppDispatch, AppThunk } from "../store";
 
 export const REGISTER_USER_REQUEST : 'REGISTER_USER_REQUEST' = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_SUCCESS : 'REGISTER_USER_SUCCESS' = 'REGISTER_USER_SUCCESS';
@@ -274,7 +274,7 @@ export type TUser = IregisterUserRequest | IregisterUserSuccess | IregisterUserF
 | IresetPasswordFailed | IloginUserRequest | IloginUserSuccess | IloginUserFailed | IsetLoggedIn | IsetNotLoggedIn | IrefreshTokenRequest | IrefreshTokenSuccess | IrefreshTokenFailed | IgetUserRequest
 | IgetUserSuccess | IgetUserFailed | IpatchUserRequest | IpatchUserSuccess | IpatchUserFailed | IlogoutUserRequest | IlogoutUserSuccess | IlogoutUserFailed;
 
-export function registerUser(name : string, email : string, password : string) : ((dispatch: AppDispatch) => void) {
+export function registerUser(name : string, email : string, password : string) : ((dispatch: AppThunk) => void) {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -304,7 +304,7 @@ export function registerUser(name : string, email : string, password : string) :
     };
 }
 
-export function forgotPassword(email : string) : ((dispatch: AppDispatch) => void) {
+export function forgotPassword(email : string) : ((dispatch: AppThunk) => void) {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -330,7 +330,7 @@ export function forgotPassword(email : string) : ((dispatch: AppDispatch) => voi
     };
 }
 
-export function resetPassword(password : string, code : string) : ((dispatch: AppDispatch) => void) {
+export function resetPassword(password : string, code : string) : ((dispatch: AppThunk) => void) {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -357,7 +357,7 @@ export function resetPassword(password : string, code : string) : ((dispatch: Ap
     };
 }
 
-export function loginUser(email : string, password : string) : ((dispatch: AppDispatch) => void) {
+export function loginUser(email : string, password : string) : ((dispatch: AppThunk) => void) {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -431,6 +431,7 @@ export function setCookie(name : string, value : string | boolean, props : {[nam
 } 
 
 
+
 export function getUser() : ((dispatch: any) => void) {
     const token = getCookie('token');
     const refresh = getCookie('refreshToken');
@@ -476,7 +477,7 @@ export function getUser() : ((dispatch: any) => void) {
     };
 }
 
-export function refreshToken() : ((dispatch: AppDispatch) => any) {
+export function refreshToken() : ((dispatch: AppThunk) => any) {
     return async (dispatch) => {
         const refresh= getCookie('refreshToken');
         const requestOptions = {
@@ -553,7 +554,7 @@ export function patchUser(name : string, email : string, password : string) : ((
 }
 
 export function logoutUser() {
-    return async (dispatch : AppDispatch) => {
+    return async (dispatch : AppThunk) => {
         const refreshToken = getCookie('refreshToken')
         const requestOptions = {
             method: 'POST',

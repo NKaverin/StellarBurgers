@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import styles from './pages.module.css';
 import { useHistory } from 'react-router-dom';
 import { registerUser } from "../services/actions/user";
-import { useDispatch } from "react-redux";
+import { useDispatch } from '../services/hooks';
 
 const RegisterPage = () => {
     const history = useHistory();

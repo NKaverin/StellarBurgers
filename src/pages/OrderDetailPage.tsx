@@ -33,7 +33,7 @@ const OrderDetailPage = () => {
         return styles.orderCanceled;
     }
 
-    const ingredientsInOrder:Array<any> = [];
+    const ingredientsInOrder:Array<TElement> = [];
     if (order) {
         ingredients.forEach(element => {
             const count = order.ingredients.filter((e) => element._id === e).length;

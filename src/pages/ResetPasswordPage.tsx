@@ -2,7 +2,7 @@ import styles from './pages.module.css';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../services/hooks';
 import { resetPassword } from '../services/actions/user';
 
 

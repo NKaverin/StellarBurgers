@@ -1,6 +1,6 @@
 import { api, checkResponse } from "../../utils/constants";
 import { TElement } from "../../utils/types";
-import { AppDispatch } from "../store";
+import { AppThunk } from "../store";
 
 export const GET_INGREDIENTS_REQUEST : 'GET_INGREDIENTS_REQUEST' = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS : 'GET_INGREDIENTS_SUCCESS' = 'GET_INGREDIENTS_SUCCESS';
@@ -40,8 +40,7 @@ function getIngredientsFailed() : IgetIngredientsFailed{
     }
 }
 
-
-export function getIngredients(dispatch : AppDispatch) {  
+export function getIngredients(dispatch : AppThunk) {  
     try {
         dispatch(getIngredientsRequest());
         return fetch(api + 'ingredients')
@@ -50,7 +49,7 @@ export function getIngredients(dispatch : AppDispatch) {
             dispatch(getIngredientsSuccess(json.data));                      
         })        
     }    
-    catch(error: any) {
+    catch(error: unknown) {
         dispatch(getIngredientsFailed());
     }
 }
