@@ -1,5 +1,6 @@
 import { api, checkResponse } from "../../utils/constants";
 import { ItokenAndUser, IUser } from "../../utils/types";
+import { AppDispatch } from "../store";
 
 export const REGISTER_USER_REQUEST : 'REGISTER_USER_REQUEST' = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_SUCCESS : 'REGISTER_USER_SUCCESS' = 'REGISTER_USER_SUCCESS';
@@ -273,7 +274,7 @@ export type TUser = IregisterUserRequest | IregisterUserSuccess | IregisterUserF
 | IresetPasswordFailed | IloginUserRequest | IloginUserSuccess | IloginUserFailed | IsetLoggedIn | IsetNotLoggedIn | IrefreshTokenRequest | IrefreshTokenSuccess | IrefreshTokenFailed | IgetUserRequest
 | IgetUserSuccess | IgetUserFailed | IpatchUserRequest | IpatchUserSuccess | IpatchUserFailed | IlogoutUserRequest | IlogoutUserSuccess | IlogoutUserFailed;
 
-export function registerUser(name, email, password) {
+export function registerUser(name : string, email : string, password : string) : ((dispatch: AppDispatch) => void) {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -303,7 +304,7 @@ export function registerUser(name, email, password) {
     };
 }
 
-export function forgotPassword(email) {
+export function forgotPassword(email : string) : ((dispatch: AppDispatch) => void) {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -329,7 +330,7 @@ export function forgotPassword(email) {
     };
 }
 
-export function resetPassword(password, code) {
+export function resetPassword(password : string, code : string) : ((dispatch: AppDispatch) => void) {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -356,7 +357,7 @@ export function resetPassword(password, code) {
     };
 }
 
-export function loginUser(email, password) {
+export function loginUser(email : string, password : string) : ((dispatch: AppDispatch) => void) {
     return async (dispatch) => {
         const requestOptions = {
             method: 'POST',
@@ -392,18 +393,18 @@ export function loginUser(email, password) {
     };
 }
 
-export function deleteCookie(name) {
-    setCookie(name, null, { expires: -1 });
+export function deleteCookie(name : string) {
+    setCookie(name, false, { expires: -1 });
 } 
 
-export function getCookie(name) {
+export function getCookie(name : string) {
     const matches = document.cookie.match(
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name, value, props) {
+export function setCookie(name : string, value : string | boolean, props : {[name: string] : any}) {
     props = props || {};
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {
@@ -412,8 +413,10 @@ export function setCookie(name, value, props) {
         d.setTime(d.getTime() + exp * 1000);
         exp = props.expires = d;
     }
-    if (exp && exp.toUTCString) {
-        props.expires = exp.toUTCString();
+    if (typeof exp == typeof Date && exp) {
+        if (typeof exp == typeof Date && exp && exp.toUTCString) {
+            props.expires = exp.toUTCString();
+        }
     }
     value = encodeURIComponent(value);
     let updatedCookie = name + '=' + value;
@@ -427,39 +430,8 @@ export function setCookie(name, value, props) {
     document.cookie = updatedCookie;
 } 
 
-export function refreshToken() {
-    return async (dispatch) => {
-        const refresh= getCookie('refreshToken');
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                'token': refresh
-            })
-        }
-        try {
-            dispatch(refreshTokenRequest())
-            return fetch(api + 'auth/token', requestOptions)
-            .then(checkResponse)
-            .then(res => {
-                dispatch(refreshTokenSuccess(res));
-                dispatch(setLoggedIn());
-                const authToken = res.accessToken.split('Bearer ')[1];
-                if (authToken) {
-                    setCookie('token', authToken, {});
-                }
-                setCookie('refreshToken', res.refreshToken, {});
-                return res;
-            });
-        }
-        catch(error: any) { 
-            dispatch(refreshTokenFailed());
-            console.log(error);
-        }
-    }  
-}
 
-export function getUser() {
+export function getUser() : ((dispatch: any) => void) {
     const token = getCookie('token');
     const refresh = getCookie('refreshToken');
 
@@ -504,7 +476,39 @@ export function getUser() {
     };
 }
 
-export function patchUser(name, email, password) {
+export function refreshToken() : ((dispatch: AppDispatch) => any) {
+    return async (dispatch) => {
+        const refresh= getCookie('refreshToken');
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'token': refresh
+            })
+        }
+        try {
+            dispatch(refreshTokenRequest())
+            return fetch(api + 'auth/token', requestOptions)
+            .then(checkResponse)
+            .then(res => {
+                dispatch(refreshTokenSuccess(res));
+                dispatch(setLoggedIn());
+                const authToken = res.accessToken.split('Bearer ')[1];
+                if (authToken) {
+                    setCookie('token', authToken, {});
+                }
+                setCookie('refreshToken', res.refreshToken, {});
+                return res;
+            });
+        }
+        catch(error: any) { 
+            dispatch(refreshTokenFailed());
+            console.log(error);
+        }
+    }  
+}
+
+export function patchUser(name : string, email : string, password : string) : ((dispatch: any) => void) {
     const token = getCookie('token');
     const refresh = getCookie('refreshToken');
 
@@ -549,7 +553,7 @@ export function patchUser(name, email, password) {
 }
 
 export function logoutUser() {
-    return async (dispatch) => {
+    return async (dispatch : AppDispatch) => {
         const refreshToken = getCookie('refreshToken')
         const requestOptions = {
             method: 'POST',

@@ -1,5 +1,6 @@
 import { api, checkResponse } from "../../utils/constants";
 import { TElement } from "../../utils/types";
+import { AppDispatch } from "../store";
 
 export const GET_INGREDIENTS_REQUEST : 'GET_INGREDIENTS_REQUEST' = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS : 'GET_INGREDIENTS_SUCCESS' = 'GET_INGREDIENTS_SUCCESS';
@@ -40,7 +41,7 @@ function getIngredientsFailed() : IgetIngredientsFailed{
 }
 
 
-export function getIngredients(dispatch) {  
+export function getIngredients(dispatch : AppDispatch) {  
     try {
         dispatch(getIngredientsRequest());
         return fetch(api + 'ingredients')

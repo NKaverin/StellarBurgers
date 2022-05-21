@@ -27,7 +27,7 @@ type IUser = {
 }
 
 type IOrder = {
-    createdAt: string,
+    createdAt: Date,
     ingredients: string[],
     name: string,
     number: number,

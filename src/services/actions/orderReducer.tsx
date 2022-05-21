@@ -1,5 +1,6 @@
 import { api, checkResponse } from "../../utils/constants";
 import { TElement } from "../../utils/types";
+import { AppDispatch } from "../store";
 import { getCookie } from "./user";
 
 export const ADD_TO_ORDER : 'ADD_TO_ORDER' = 'ADD_TO_ORDER';
@@ -92,8 +93,8 @@ export function reorderItems(dragIndex : number, hoverIndex : number) : Ireorder
     }
 }
 
-export function postOrder(dataForOrder) {
-    return async (dispatch) => {
+export function postOrder(dataForOrder : string[]) {
+    return async (dispatch : AppDispatch) => {
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json',
