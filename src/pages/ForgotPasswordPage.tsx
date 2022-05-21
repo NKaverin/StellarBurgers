@@ -44,12 +44,12 @@ const ForgotPasswordPage = () => {
                 />
             </div>
                 <div className="mt-6">
-                    <Button type="primary" size="medium" disabled={validationError}/>
+                    <Button type="primary" size="medium" disabled={validationError}>Восстановить</Button> 
                 </div>      
             </form>      
             <p className={styles.mainText + ' text text_type_main-default text_color_inactive mt-20'}>
                 Вспомнили пароль?
-                <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })} name ='Войти'/>
+                <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })}>Войти</Button>
             </p>      
         </div>
     );

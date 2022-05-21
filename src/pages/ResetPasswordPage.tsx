@@ -1,5 +1,5 @@
 import styles from './pages.module.css';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ChangeEvent, SyntheticEvent, useRef, useState } from 'react';
 import { useDispatch } from '../services/hooks';
@@ -66,10 +66,12 @@ const ResetPasswordPage = () => {
                         size={'default'}                      
                     />
                 </div>
-                <Button type="primary" size="medium" disabled={validationError} name = 'Сохранить'/>
+                <Button type="primary" size="medium" disabled={validationError}>
+                    Сохранить
+                </Button>
                 <p className={styles.mainText + ' text text_type_main-default text_color_inactive mt-20'}>
                     Вспомнили пароль?
-                    <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })} name = 'Войти'/>
+                    <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })}>Войти</Button>
                 </p>  
             </form>
         </div> 

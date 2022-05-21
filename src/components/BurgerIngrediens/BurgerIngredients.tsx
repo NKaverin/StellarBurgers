@@ -60,7 +60,15 @@ const  BurgerIngredients = ({ openHandler } : IBurgerIngredients) => {
             <h1 className="text text_type_main-large mt-10"> Соберите бургер </h1>
             {/* переключатель */}
             <div className={styles.burgerIngredients__tabs + " mt-5"}>
-
+                <a><Tab  value="buns" active={current === "buns"} onClick={() => goTo(buns)}>
+                    Булки
+                </Tab></a>
+                <a><Tab value="suses" active={current === "suses"} onClick={() => goTo(suses)}>
+                    Соусы
+                </Tab></a>
+                <a><Tab value="fillings" active={current === "fillings"} onClick={() => goTo(fillings)}>
+                    Начинки
+                </Tab></a>
             </div>
             {/* ингредиенты */}
             <div className={styles.burgerIngredients__container + " mt-10"}>    

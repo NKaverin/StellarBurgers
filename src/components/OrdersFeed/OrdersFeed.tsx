@@ -55,9 +55,9 @@ const OrdersFeed = () => {
 
     const init = async () => {
         if (activeProfile) {
-            dispatch(wsConnectionStart(`?token=${getCookie('token')}`));
+            await dispatch(wsConnectionStart(`?token=${getCookie('token')}`));
         }  else {
-            dispatch(wsConnectionStart('/all'));
+            await dispatch(wsConnectionStart('/all'));
         }       
     };
 

@@ -68,15 +68,15 @@ const LoginPage = () => {
                         size={'default'}
                     />
                 </div>
-                <Button type="primary" size="medium" disabled={email === '' || password === ''} name ='Войти'/>       
+                <Button type="primary" size="medium" disabled={email === '' || password === ''}>Войти</Button>         
             </form>      
             <p className={styles.mainText + ' text text_type_main-default text_color_inactive mt-20'}>
                 Вы - новый пользователь?          
-                <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/register' })} name ='Зарегистрироваться'/>         
+                <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/register' })}>Зарегистрироваться</Button>               
             </p>
             <p className={styles.mainText + ' text text_type_main-default text_color_inactive mt-4'}>
                 Забыли пароль?          
-                <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/forgot-password' })} name ='Восстановить пароль'/>          
+                <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/forgot-password' })}>Восстановить пароль</Button>           
             </p>
         </div>
     );

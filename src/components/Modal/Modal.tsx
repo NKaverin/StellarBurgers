@@ -2,7 +2,7 @@ import styles from './Modal.module.css';
 import ReactDOM from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
-import { ReactNode, SyntheticEvent, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 const Modal = ({children, closeHandler, title} : IModal) => {
     

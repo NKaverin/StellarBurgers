@@ -103,10 +103,12 @@ const RegisterPage = () => {
                         size={'default'}
                     />
                 </div>
-                <Button type="primary" size="medium" disabled={!validationForm} name = 'Зарегистрироваться'/>
+                <Button type="primary" size="medium" disabled={!validationForm}>
+                    Зарегистрироваться
+                </Button>
                 <p className="text text_type_main-default text_color_inactive mt-20 mb-4">
                     Уже зарегистрированы?          
-                    <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })} name ='Войти'/>         
+                    <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })}>Войти</Button>         
                 </p>
             </form>
         </div>

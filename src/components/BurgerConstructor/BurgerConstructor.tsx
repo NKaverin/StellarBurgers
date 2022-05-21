@@ -68,7 +68,7 @@ const BurgerConstructor = ({ openHandler } : IBurgerConstructor) => {
             <ul className={styles.burgerConstructor__ingredients + " "}>   
                 {data.map( element => {
                     if (element.type !== 'bun') { 
-                        return <IngredientInOrder onClickDeleteElement = {(element) => onClickDeleteElement(element)} element={element} moveListItem={moveListItem} key={element.uud}/>
+                        return <IngredientInOrder onClickDeleteElement = {(element) => onClickDeleteElement(element)} element={element} moveListItem={moveListItem} />
                     }                    
                 })}
             </ul>
@@ -87,7 +87,9 @@ const BurgerConstructor = ({ openHandler } : IBurgerConstructor) => {
                 <p className="text text_type_digits-medium mr-2">{order.totalPrice}</p>
                 <CurrencyIcon type="primary" />
                 <div className="ml-10" onClick={stockBun && openHandler}>
-                    <Button type="primary" size="medium" name='Оформить заказ'/> Оформить заказ
+                    <Button type="primary" size="medium">
+                        Оформить заказ
+                    </Button>     
                 </div>
         
             </div>

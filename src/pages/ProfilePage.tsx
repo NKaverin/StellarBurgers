@@ -62,7 +62,7 @@ const ProfilePage = () => {
 
     const submitHandler = async (e : SyntheticEvent) => {
         e.preventDefault();
-        dispatch(patchUser(name, email, password));
+        await dispatch(patchUser(name, email, password));
     };
 
     const cancelHandler = () => {
@@ -160,8 +160,8 @@ const ProfilePage = () => {
                         />
                     </div>
                     {isChanged && (<div className={styles.buttons + ' mt-10'}>
-                        <Button type="primary" size="medium" disabled={!validationForm && !isChanged} name ='Сохранить'/>
-                        <Button type="primary" size="medium" onClick={cancelHandler} name ='Отмена'/>
+                        <Button type="primary" size="medium" disabled={!validationForm && !isChanged}>Сохранить</Button>
+                        <Button type="primary" size="medium" onClick={cancelHandler}>Отмена</Button>
                     </div>)}
                 </form>
                 
