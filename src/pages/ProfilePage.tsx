@@ -1,35 +1,36 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from "react";
 import styles from './pages.module.css';
 import { logoutUser, patchUser } from "../services/actions/user";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../services/redusers/rootReduser";
+import { useSelector, useDispatch } from '../services/hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import OrdersFeed from "../components/OrdersFeed/OrdersFeed";
+import { IValidationError } from "../utils/types";
 
 const ProfilePage = () => {
+
     const dispatch = useDispatch();   
     const history = useHistory();
     const location = useLocation();
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null); 
     const nameRef = useRef<HTMLInputElement>(null);
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [validationForm, setValidationForm] = useState(false);
-    const [isChanged, setIsChenged] = useState(false);
-    const [validationError, setValidationError] = useState({
+    const [password, setPassword] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [validationForm, setValidationForm] = useState<boolean>(false);
+    const [isChanged, setIsChenged] = useState<boolean>(false);
+    const [validationError, setValidationError] = useState<IValidationError>({
         name: false,
         email: false,
-        password: false,
+        password: false
     });
 
-    const user = useSelector((state:RootState) => state.user.user);
+    const user = useSelector((state) => state.user.user);
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [name, setName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
 
-    const onChangeName = (e) => {
+    const onChangeName = (e : ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
         setValidationError({
             ...validationError,
@@ -39,7 +40,7 @@ const ProfilePage = () => {
         setIsChenged(true);
     }
 
-    const onChangeEmail = (e) => {
+    const onChangeEmail = (e : ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
         setValidationError({
             ...validationError,
@@ -49,7 +50,7 @@ const ProfilePage = () => {
         setIsChenged(true);
     }
 
-    const onChangePassword = (e) => {
+    const onChangePassword = (e : ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
         setValidationError({
             ...validationError,
@@ -59,7 +60,7 @@ const ProfilePage = () => {
         setIsChenged(true);
     }
 
-    const submitHandler = async (e) => {
+    const submitHandler = async (e : SyntheticEvent) => {
         e.preventDefault();
         await dispatch(patchUser(name, email, password));
     };

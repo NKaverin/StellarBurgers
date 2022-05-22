@@ -1,27 +1,27 @@
 import styles from './/OrdersFeed.module.css';
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { useLocation, useHistory } from 'react-router-dom';
 import { fotmatDate, getStatusText } from '../../utils/constants';
-import { RootState } from '../../services/redusers/rootReduser';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { wsConnectionClosed, wsConnectionStart } from '../../services/actions/ws';
 import { getCookie } from '../../services/actions/user';
+import { TElement } from '../../utils/types';
 
 
 const OrdersFeed = () => {
     const dispatch = useDispatch();
-    const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
+    const wsConnected = useSelector((state) => state.ws.wsConnected);
     const location = useLocation();
     const history = useHistory();
     
-    const orders = useSelector((state:RootState) => state.ws.orders);
-    const getOrdersSuccess = useSelector((state:RootState) => state.ws.getOrdersSuccess);
+    const orders = useSelector((state) => state.ws.orders);
+    const getOrdersSuccess = useSelector((state) => state.ws.getOrdersSuccess);
 
     const activeProfile = (location.pathname.indexOf('/profile') === 0);  
-    const ingredients = useSelector((state:RootState) => state.ingredients.items);
+    const ingredients = useSelector((state) => state.ingredients.items);
 
-    const onClick = (order_id) => {
+    const onClick = (order_id : string) => {
         if (activeProfile) {
             history.replace({pathname: 'orders/' + order_id, state: { background: location } });
         }  else {
@@ -29,11 +29,11 @@ const OrdersFeed = () => {
         }
     }
 
-    const sumOrderPrice = (ingredientsInOrder) => {    
-        return ingredientsInOrder.reduce((total, element) => { return total + ingredients.filter((e) => element === e._id)[0].price}, 0);
+    const sumOrderPrice = (ingredientsInOrder : Array<string>) => {    
+        return ingredientsInOrder.reduce((total : number, element : string) => { return total + ingredients.filter((e) => element === e._id)[0].price}, 0);
     }
 
-    const getStatusColorClass = (status) => {
+    const getStatusColorClass = (status : string) => {
         if (status === 'done' || status === 'created') {
             return '';
         }

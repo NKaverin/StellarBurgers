@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import {  useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from '../../services/hooks';
 import { useLocation, Switch, Route, Redirect, useHistory } from "react-router-dom";
 import FeedPage from "../../pages/FeedPage";
 import ForgotPasswordPage from "../../pages/ForgotPasswordPage";
@@ -12,18 +12,21 @@ import ProfilePage from "../../pages/ProfilePage";
 import RegisterPage from "../../pages/RegisterPage";
 import ResetPasswordPage from "../../pages/ResetPasswordPage";
 import { getIngredients } from "../../services/actions/ingredients";
-import { RootState } from "../../services/redusers/rootReduser";
 import Modal from "../Modal/Modal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
+interface LocationState {  
+    background: any
+}
+
 const RouteSwitch = () => {
     const dispatch = useDispatch();
-    const location = useLocation();
+    const location = useLocation<LocationState>();
     const history = useHistory();
     const background = location.state && location.state.background;
-    const loggedIn = useSelector((state:RootState) => state.user.loggedIn);                   
-    const item = useSelector((state:RootState) => state.ingredientDetails.ingredient);
-    const getOrdersSuccess = useSelector((state:RootState) => state.ws.getOrdersSuccess);
+    const loggedIn = useSelector((state) => state.user.loggedIn);                   
+    const item = useSelector((state) => state.ingredientDetails.ingredient);
+    const getOrdersSuccess = useSelector((state) => state.ws.getOrdersSuccess);
 
     const closeItemFeed = () => {
         history.replace({ pathname: '/feed', state: { background: null }});

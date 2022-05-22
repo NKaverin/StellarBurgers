@@ -1,30 +1,19 @@
-import { ADD_TO_ORDER, POST_ORDER_CLOSE, POST_ORDER_FAILED, POST_ORDER_REQUEST, POST_ORDER_SUCCESS, REMOVE_FROM_ORDER, REORDER_ITEMS } from '../actions/orderReducer';
+import { TElement } from '../../utils/types';
+import { ADD_TO_ORDER, POST_ORDER_CLOSE, POST_ORDER_FAILED, POST_ORDER_REQUEST, POST_ORDER_SUCCESS, REMOVE_FROM_ORDER, REORDER_ITEMS, TOrderReducer } from '../actions/orderReducer';
 
-interface Element {
-    _id: string,
-    name: string,
-    type: string,
-    proteins: number,
-    fat: number,
-    carbohydrates: number,
-    calories: number,
-    price: number,
-    image: string,
-    image_mobile: string,
-    image_large: string,
-    __v: number,
-    elementIndex: number,
-    uud: string
+interface IInitialState {
+    totalPrice: number,
+    ingredients: TElement[],
+    orderId: null | number
 }
 
-// самая популярная булка в нашей бургерной
-const initialState  = {
+const initialState : IInitialState = {
     totalPrice: 0,
-    ingredients: [] as Array<Element>,
-    orderId: ''
+    ingredients: [],
+    orderId: null
 }
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state : IInitialState = initialState, action : TOrderReducer) : IInitialState => {
     
     switch (action.type) {
         case ADD_TO_ORDER: {

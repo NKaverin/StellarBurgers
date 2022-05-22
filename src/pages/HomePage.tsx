@@ -1,12 +1,11 @@
 
 import {  useState } from 'react';
-import { useDispatch, useSelector} from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { DndProvider } from "react-dnd";
 
 import { useHistory, useLocation } from 'react-router-dom';
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from './pages.module.css';
-import { RootState } from '../services/redusers/rootReduser';
 import { closeIngredientDetails, showIngredientDetails } from '../services/actions/ingredientDetails';
 import { postOrder, postOrderClose } from '../services/actions/orderReducer';
 import BurgerIngredients from '../components/BurgerIngrediens/BurgerIngredients';
@@ -14,19 +13,20 @@ import BurgerConstructor from '../components/BurgerConstructor/BurgerConstructor
 import Modal from '../components/Modal/Modal';
 import IngredientDetails from '../components/IngredientDetails/IngredientDetails';
 import OrderDetails from '../components/OrderDetails/OrderDetails';
+import { TElement } from '../utils/types';
 
 function HomePage() {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [isVisibleOrder, setIsVisibleOrder] = useState(false);
-    const loggedIn = useSelector((state:RootState) => state.user.loggedIn);
+    const [isVisibleOrder, setIsVisibleOrder] = useState<boolean>(false);
+    const loggedIn = useSelector((state) => state.user.loggedIn);
     const location = useLocation();
 
-    const item = useSelector((state:RootState) => state.ingredientDetails.ingredient);
-    const data = useSelector((state:RootState) => state.order.ingredients);
+    const item = useSelector((state) => state.ingredientDetails.ingredient);
+    const data = useSelector((state) => state.order.ingredients);
 
     {/* открытие и закрытие  деталей ингредиента */}
-    const openItem = (item) => {
+    const openItem = (item : TElement) => {
         history.replace({ pathname: '/ingredients/' + item._id, state: { background: {...location, pathname: '/ingredients/' + item._id}}} );
         dispatch(showIngredientDetails(item));       
     }  

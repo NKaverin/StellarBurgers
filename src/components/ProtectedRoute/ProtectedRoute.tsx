@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { useLocation } from 'react-router-dom';
 import { getUser } from '../../services/actions/user';
-import { RootState } from '../../services/redusers/rootReduser';
 
-export default function ProtectedRoute({ children, ...restOfProps }) { 
+export default function ProtectedRoute({ children, ...restOfProps } : IProtectedRoute) { 
     const dispatch = useDispatch();
-    const loggedIn = useSelector((state:RootState) => state.user.loggedIn); 
-    const [isUserLoaded, setUserLoaded] = useState(false);
+    const loggedIn = useSelector((state) => state.user.loggedIn); 
+    const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
     const location = useLocation();
 
     const init = async () => {
@@ -38,4 +37,10 @@ export default function ProtectedRoute({ children, ...restOfProps }) {
             }
         />
     );
+}
+
+interface IProtectedRoute {
+    children: ReactNode,
+    exact?: boolean,
+    path: string
 }

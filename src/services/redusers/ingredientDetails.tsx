@@ -1,10 +1,15 @@
-import { SHOW_INGREDIENT_DETAILS, CLOSE_INGREDIENT_DETAILS } from '../actions/ingredientDetails';
+import { TElement } from '../../utils/types';
+import { SHOW_INGREDIENT_DETAILS, CLOSE_INGREDIENT_DETAILS, TIngredientDetailsActions } from '../actions/ingredientDetails';
 
-const initialState = {
-    ingredient: false
+interface IInitialState {
+    ingredient: null | TElement
 }
 
-export const ingredientDetailsReducer = (state = initialState, action) => {
+const initialState : IInitialState = {
+    ingredient: null
+}
+
+export const ingredientDetailsReducer = (state : IInitialState = initialState, action : TIngredientDetailsActions) : IInitialState => {
     switch (action.type) {
         case SHOW_INGREDIENT_DETAILS: {
             return {
@@ -15,7 +20,7 @@ export const ingredientDetailsReducer = (state = initialState, action) => {
         case CLOSE_INGREDIENT_DETAILS: {
             return {
                 ...state,
-                ingredient: false
+                ingredient: null
             }
         }
         default: return state;

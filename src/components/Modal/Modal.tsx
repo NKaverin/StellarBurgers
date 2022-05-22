@@ -1,15 +1,14 @@
 import styles from './Modal.module.css';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 
-const Modal = ({children, closeHandler, title}) => {
+const Modal = ({children, closeHandler, title} : IModal) => {
     
     {/* при открытии добавляем листенер на Esc */}
     useEffect(() => {
-        const closeModal = (event) => {
+        const closeModal = (event : KeyboardEvent) : any => {
             if(event.key === 'Escape'){
                 closeHandler();
             }
@@ -41,10 +40,10 @@ const Modal = ({children, closeHandler, title}) => {
         container)
 }
 
-Modal.propTypes = {  
-    children: PropTypes.element.isRequired,
-    title: PropTypes.string,
-    closeHandler: PropTypes.func.isRequired
+interface IModal {  
+    children: ReactNode,
+    title?: string,
+    closeHandler: () => void
 }
 
 export default Modal;

@@ -1,16 +1,14 @@
-
 import styles from './pages.module.css';
-import {  useSelector } from 'react-redux';
-import { RootState } from "../services/redusers/rootReduser";
+import { useSelector } from '../services/hooks';
 
 import OrdersFeed from '../components/OrdersFeed/OrdersFeed';
 
 
 const FeedPage = () => {
 
-    const orders = useSelector((state:RootState) => state.ws.orders);
-    const total = useSelector((state:RootState) => state.ws.total);
-    const totalToday = useSelector((state:RootState) => state.ws.totalToday);
+    const orders = useSelector((state) => state.ws.orders);
+    const total = useSelector((state) => state.ws.total);
+    const totalToday = useSelector((state) => state.ws.totalToday);
 
 
     return (   

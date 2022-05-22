@@ -1,9 +1,9 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useRef, useState } from "react";
+import { ChangeEvent, FormEventHandler, SyntheticEvent, useRef, useState } from "react";
 import styles from './pages.module.css';
 import { useHistory } from 'react-router-dom';
 import { registerUser } from "../services/actions/user";
-import { useDispatch } from "react-redux";
+import { useDispatch } from '../services/hooks';
 
 const RegisterPage = () => {
     const history = useHistory();
@@ -11,10 +11,10 @@ const RegisterPage = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [name, setName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const [validationForm, setValidationForm] = useState(false);
     const [validationError, setValidationError] = useState({
         name: false,
@@ -22,7 +22,7 @@ const RegisterPage = () => {
         password: false,
     });
 
-    const onChangeName = (e) => {
+    const onChangeName = (e : ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
         setValidationError({
             ...validationError,
@@ -31,7 +31,7 @@ const RegisterPage = () => {
         setValidationForm(e.target.value.length >= 4 && !validationError.email && !validationError.password);
     }
 
-    const onChangeEmail = (e) => {
+    const onChangeEmail = (e : ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
         setValidationError({
             ...validationError,
@@ -41,7 +41,7 @@ const RegisterPage = () => {
         setValidationForm(!validationError.name && !e.target.validity.valid && !validationError.password);
     }
 
-    const onChangePassword = (e) => {
+    const onChangePassword = (e : ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
         setValidationError({
             ...validationError,
@@ -50,7 +50,7 @@ const RegisterPage = () => {
         setValidationForm(!validationError.name && !validationError.email && e.target.value.length >= 6);
     }
 
-    const submitHandler = async (e) => { 
+    const submitHandler = async (e : SyntheticEvent) => { 
         e.preventDefault();
         await dispatch(registerUser(name, email, password));
         history.replace({ pathname: '/' });
@@ -108,7 +108,7 @@ const RegisterPage = () => {
                 </Button>
                 <p className="text text_type_main-default text_color_inactive mt-20 mb-4">
                     Уже зарегистрированы?          
-                    <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })}>Войти</Button>          
+                    <Button type="secondary" size="medium" onClick={() => history.replace({ pathname: '/login' })}>Войти</Button>         
                 </p>
             </form>
         </div>

@@ -1,30 +1,34 @@
 import { useEffect } from 'react';
 import styles from './pages.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from "../services/redusers/rootReduser";
+import { useSelector, useDispatch } from '../services/hooks';
 import { wsConnectionStart, wsConnectionClosed } from '../services/actions/ws';
 import { useParams, useLocation }from 'react-router-dom';
 import { fotmatDate, getStatusText } from '../utils/constants';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getCookie } from '../services/actions/user';
+import { TElement } from '../utils/types';
+
+interface LocationState {  
+    background: any
+}
 
 const OrderDetailPage = () => { 
     const dispatch = useDispatch();  
-    const { id } = useParams();
-    const orders = useSelector((state:RootState) => state.ws.orders);
-    const getOrdersSuccess = useSelector((state:RootState) => state.ws.getOrdersSuccess);
+    const { id } = useParams<{id : string}>();
+    const orders = useSelector((state) => state.ws.orders);
+    const getOrdersSuccess = useSelector((state) => state.ws.getOrdersSuccess);
     const order = orders.find((element) => element._id === id);
-    const wsConnected = useSelector((state:RootState) => state.ws.wsConnected);
-    const location = useLocation();
+    const wsConnected = useSelector((state) => state.ws.wsConnected);
+    const location = useLocation<LocationState>();
     const background = location.state && location.state.background;
-    const ingredients = useSelector((state:RootState) => state.ingredients.items) || [];
+    const ingredients = useSelector((state) => state.ingredients.items) || [];
     const activeProfile = (location.pathname.indexOf('/profile') === 0);  
 
-    const sumOrderPrice = (ingredientsInOrder) => {    
-        return ingredientsInOrder.reduce((total, element) => { return total + ingredients.filter((e) => element === e._id)[0].price}, 0);
+    const sumOrderPrice = (ingredientsInOrder : Array<string>) => {    
+        return ingredientsInOrder.reduce((total : number, element : string) => { return total + ingredients.filter((e) => element === e._id)[0].price}, 0);
     }
 
-    const getStatusColorClass = (status) => {
+    const getStatusColorClass = (status : string) => {
         if (status === 'pending' || status === 'created') {
             return '';
         }
@@ -34,7 +38,7 @@ const OrderDetailPage = () => {
         return styles.orderCanceled;
     }
 
-    const ingredientsInOrder:Array<any> = [];
+    const ingredientsInOrder:Array<TElement> = [];
     if (order) {
         ingredients.forEach(element => {
             const count = order.ingredients.filter((e) => element._id === e).length;

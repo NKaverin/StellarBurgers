@@ -1,23 +1,23 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useRef, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useRef, useState } from "react";
 import styles from './pages.module.css';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch } from '../services/hooks';
 import { forgotPassword } from "../services/actions/user";
 
 const ForgotPasswordPage = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const emailRef = useRef<HTMLInputElement>(null);
-    const [email, setEmail] = useState('');
-    const [validationError, setValidationError] = useState(false);
+    const [email, setEmail] = useState<string>('');
+    const [validationError, setValidationError] = useState<boolean>(false);
 
-    const onChangeEmail = (e) => {
+    const onChangeEmail = (e : ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
         setValidationError(!e.target.validity.valid);
     }
 
-    const submitHandler = async (e) => { 
+    const submitHandler = async (e : SyntheticEvent) => { 
         e.preventDefault();
         await dispatch(forgotPassword(email));
 

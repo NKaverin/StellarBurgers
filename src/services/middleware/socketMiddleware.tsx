@@ -1,9 +1,13 @@
 import { getCookie } from "../actions/user";
 
-export const socket = (wsUrl, wsActions) => { 
-    return store => {
-        let socket;
-        return next => action => {
+import { AnyAction, Middleware, MiddlewareAPI } from 'redux'
+import { AppDispatch, TwsActions } from "../store";
+import { RootState } from "../redusers/rootReduser";
+
+export const socket = (wsUrl : string, wsActions : TwsActions) : Middleware => { 
+    return (store: MiddlewareAPI<AppDispatch, RootState>) => {
+        let socket : WebSocket | null = null;;
+        return (next) => (action: AnyAction) => {
             const { dispatch } = store;
             const { type, payload } = action;
             const { wsInit, onOpen, onError, onClose, onMessage, wsSendMessage } = wsActions;

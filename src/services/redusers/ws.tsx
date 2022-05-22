@@ -3,8 +3,19 @@ import {
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE,
-    WS_CONNECTION_START
+    WS_CONNECTION_START,
+    Tws
 } from '../actions/ws';
+
+import {IOrder} from '../../utils/types';
+interface IInitialState {
+    wsConnected: boolean,
+    getOrdersSuccess: boolean,
+    wsConectionStarted: boolean,
+    total: number,
+    totalToday: number,
+    orders: IOrder[]
+}
 
 const initialState = {
     wsConnected: false,
@@ -15,7 +26,7 @@ const initialState = {
     orders: [] 
 };
 
-export const ws = (state = initialState, action) => {
+export const ws = (state : IInitialState = initialState, action : Tws) : IInitialState=> {
     switch (action.type) {
         
         case WS_CONNECTION_START:

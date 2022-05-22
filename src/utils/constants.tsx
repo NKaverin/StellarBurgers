@@ -1,13 +1,14 @@
 export const api = 'https://norma.nomoreparties.space/api/';
 
-export function checkResponse(res) {
+export function checkResponse(res: Response) : Promise<any> {
     if (res.ok) {
         return res.json();
     }
     return Promise.reject('Ошибка ' + res.status);
 }
 
-export const fotmatDate = (date) => {
+export const fotmatDate = (date : Date) => {
+
     const currentDate = new Date(date)    
     const options:Intl.DateTimeFormatOptions = {weekday: 'long'};
     const day = currentDate.toLocaleString("ru", options);
@@ -25,7 +26,8 @@ export const fotmatDate = (date) => {
     return `${day.charAt(0).toUpperCase() + day.slice(1)}, ${time} i-GMT${GMTsign}${GMTdifference}`;
 }
 
-export const getStatusText = (status) => {
+
+export const getStatusText = (status : string) => {
 
     switch (status) {
 
