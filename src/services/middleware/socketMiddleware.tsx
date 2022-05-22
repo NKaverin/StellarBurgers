@@ -1,20 +1,13 @@
 import { getCookie } from "../actions/user";
 
-import { AnyAction, MiddlewareAPI } from 'redux'
+import { AnyAction, Middleware, MiddlewareAPI } from 'redux'
+import { AppDispatch, TwsActions } from "../store";
+import { RootState } from "../redusers/rootReduser";
 
-interface TwsActions {
-    wsInit: 'WS_CONNECTION_START',
-    wsSendMessage: 'WS_SEND_MESSAGE',
-    onOpen: 'WS_CONNECTION_SUCCESS',
-    onClose: 'WS_CONNECTION_CLOSED',
-    onError: 'WS_CONNECTION_ERROR',
-    onMessage: 'WS_GET_MESSAGE'
-}
-
-export const socket = (wsUrl : string, wsActions : TwsActions) => { 
-    return (store : MiddlewareAPI) => {
+export const socket = (wsUrl : string, wsActions : TwsActions) : Middleware => { 
+    return (store: MiddlewareAPI<AppDispatch, RootState>) => {
         let socket : WebSocket | null = null;;
-        return (next: any) => (action: AnyAction) => {
+        return (next) => (action: AnyAction) => {
             const { dispatch } = store;
             const { type, payload } = action;
             const { wsInit, onOpen, onError, onClose, onMessage, wsSendMessage } = wsActions;

@@ -15,7 +15,7 @@ const wsActions : TwsActions = {
     onMessage: WS_GET_MESSAGE
 };
 
-interface TwsActions {
+export interface TwsActions {
     wsInit: 'WS_CONNECTION_START',
     wsSendMessage: 'WS_SEND_MESSAGE',
     onOpen: 'WS_CONNECTION_SUCCESS',

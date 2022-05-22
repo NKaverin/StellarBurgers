@@ -477,7 +477,7 @@ export const getUser : AppThunk = () : ((dispatch: any) => void) => {
     };
 }
 
-export const refreshToken : AppThunk = () : ((dispatch : AppDispatch) => any) => {
+export const refreshToken : AppThunk = () : ((dispatch : AppDispatch) => Promise<any>)  => {
     return async (dispatch) => {
         const refresh= getCookie('refreshToken');
         const requestOptions = {
@@ -517,7 +517,7 @@ export const patchUser : AppThunk = (name : string, email : string, password : s
     if (!token && !refresh) {
         return async () => {}
     } 
-    return async (dispatch : any) => {
+    return async (dispatch : AppDispatch) => {
         const requestOptions = {
             method: 'PATCH',
             headers: {
@@ -533,10 +533,10 @@ export const patchUser : AppThunk = (name : string, email : string, password : s
         try {
             dispatch(patchUserRequest());
             return fetch(api + 'auth/user', requestOptions)
-                .then(res => {
+                .then(async res => {
                     if (res.status === 403) {
-                        return dispatch(refreshToken())
-                        .then(() => {return dispatch(patchUser(name, email, password))})
+                        await refreshToken();
+                        await patchUser(name, email, password);
                     } else {
                         return checkResponse(res);
                     }
